@@ -1,0 +1,14 @@
+<VirtualHost bklewis.master.cs.haverford.edu> 
+	ServerAdmin bklewis@brynmawr.edu
+	DocumentRoot ~/repos/quizbase/
+
+	WSGIScriptAlias / ~/repos/quizbase/quizbase/quizbase/wsgi.py
+	WSGIPythonPath ~/repos/quizbase
+
+	<Directory ~/repos/quizbase/>
+	<Files wsgi.py>
+	Require all granted
+	</Files>
+	</Directory>
+
+</VirtualHost>
