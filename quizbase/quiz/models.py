@@ -20,6 +20,7 @@ class User(models.Model)
 	last_name = models.CharField(max_length=50)
 	email = models.CharField(max_length=500)
 	permissions = models.IntegerField()
+	password = models.CharField(max_length=100)
 
 class Quiz_attempt(models.Model)
 	quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
