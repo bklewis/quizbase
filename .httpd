@@ -1,13 +1,22 @@
 <VirtualHost bklewis.master.cs.haverford.edu:80> 
+	ServerName bklewis.master.cs.haverford.edu
 	ServerAdmin bklewis@brynmawr.edu
 
-	WSGIScriptAlias / ~/db/quizbase/quizbase/quizbase/wsgi.py
-	WSGIPythonPath ~/db/quizbase/quizbase
+	WSGIDaemonProcess bklewis.master.cs.haverford.edu python-path=/home/bklewis/db/quizbase/quizbase
+	WSGIProcessGroup bklewis.master.cs.haverford.edu
+
+	WSGIScriptAlias / /home/bklewis/db/quizbase/quizbase/quizbase/wsgi.py
+
+	Alias /static/ /home/bklewis/db/quizbase/quizbase/static/
 
 	<Directory ~/db/quizbase/quizbase/quizbase>
 		<Files wsgi.py>
 			Require all granted
 		</Files>
+	</Directory>
+
+	<Directory /home/bklewis/db/quizbase/quizbase/static/>
+		Require all granted
 	</Directory>
 
 </VirtualHost>
