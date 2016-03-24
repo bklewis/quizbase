@@ -10,26 +10,34 @@ from .models import Quiz
 # Create your views here.
 
 def index(request):
-	return HttpResponse("Hello, world.  You're at the quiz index.")
+	return HttpResponse("Welcome to QuizBase")
 
 def create(request):
 	c = {}
 	c.update(csrf(request))
-	#quiz = Quiz(name = request.POST['quizname'])
-	#quiz.save()
-	#if request.method == 'GET':
-	quizList = Quiz.objects.order_by('name')
-	#output = ', '.join([q.name for q in quizList])
-	#return HttpResponse(output)
-	#template = loader.get_template('create.html')
-	context = {'quizList': quizList,}
-	#return HttpResponse(template.render(context, request))
-	return render(request, 'create.html', context)
-	#return render_to_response(request, 'create.html', c)
-	# https://docs.djangoproject.com/en/1.8/ref/csrf/#how-to-use-it
+	if request.method == 'GET':
+		quizList = Quiz.objects.order_by('name')
+		#output = ', '.join([q.name for q in quizList])
+		#return HttpResponse(output)
+		#template = loader.get_template('create.html')
+		context = {'quizList': quizList,}
+		#return HttpResponse(template.render(context, request))
+		return render(request, 'create.html', context)
+		#return render_to_response(request, 'create.html', c)
+		# https://docs.djangoproject.com/en/1.8/ref/csrf/#how-to-use-it
 
-	#elif request.method == 'POST':
-	#	return HttpResponse("post!")
+	elif request.method == 'POST':
+		quiz = Quiz(name = request.POST['quizname'])
+		quiz.save()
+		return HttpResponse("post!")
+
+def quizzes(request):
+	quizList = Quiz.objects.order_by('name')
+	#context = {'quizList': quizList,}
+	#return render(request, 'create.html', context)
+	output = ', '.join([q.name for q in quizList])
+	return HttpResponse(output)
+
 
 def creating(request):
 	return HttpResponse("CREATING")
