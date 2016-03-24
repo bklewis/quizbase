@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="http://bklewis.master.cs.haverford.edu" />
+		<title>Quizzes</title>
+	</head>
+	<body>
+		<h1>Available Quizzes<h1>
+		<ol>
+			{% for quiz in quizzes %}
+			<li><href="/quizzes/{{quiz.id}}/">{{quiz.name}}</a></li>
+			{% endfor %}
+		</ol>
+	<form action="/quiz_created" method="post" enctype="multipart/form-data">
+		<label for="quizname">WHOOO - Enter the name of a new quiz here:</label>
+		<input type="text" name="quizname"<br>
+		<input type="submit" value="Submit">
+	</form>
+	</body>
+</html>
