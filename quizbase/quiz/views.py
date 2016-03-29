@@ -10,7 +10,8 @@ from .models import Quiz
 # Create your views here.
 
 def index(request):
-	return HttpResponse("Welcome to QuizBase")
+	return render(request, 'home.html')
+	#return HttpResponse("Welcome to QuizBase")
 
 def create(request):
 	c = {}
