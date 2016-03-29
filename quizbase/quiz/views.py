@@ -39,6 +39,9 @@ def quizzes(request):
 	output = ', '.join([q.name for q in quizList])
 	return HttpResponse(output)
 
+def login(request):
+	return HttpResponse("login")
+
 
 def creating(request):
 	return HttpResponse("CREATING")

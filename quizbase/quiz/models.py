@@ -9,7 +9,7 @@ class Quiz(models.Model):
 class Question(models.Model):
 	quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
 	string = models.CharField(max_length=1000)
-	ord = models.IntegerField()
+#	ord = models.IntegerField()
 
 class Answer(models.Model):
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)
