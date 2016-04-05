@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
@@ -14,9 +15,10 @@ def index(request):
 	return render(request, 'home.html')
 	#return HttpResponse("Welcome to QuizBase")
 
+@login_required(login_url='/login/')
 def create(request):
-	c = {}
-	c.update(csrf(request))
+	#c = {}
+	#c.update(csrf(request))
 	if request.method == 'GET':
 		quizList = Quiz.objects.order_by('name')
 		#output = ', '.join([q.name for q in quizList])
