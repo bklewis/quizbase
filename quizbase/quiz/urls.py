@@ -8,8 +8,8 @@ urlpatterns = [
 #	url(r'^create/', views.create, name='create'),
 	url(r'^create/', views.create, name='create'),
 	url(r'^quizzes/', views.quizzes, name='quizzes'),
-	url(r'^login/', login),
-#	url(r'^login/', login, {'template_name': 'login.html'}),
+#	url(r'^login/', login),
+	url(r'^login/', login, {'template_name': 'login.html'}),
 #	url(r'^login/', views.login, name='login'),
 #	url(r'^login/', views.LoginView.as_view(), name='login'),
 ]

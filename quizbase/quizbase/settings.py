@@ -54,7 +54,9 @@ ROOT_URLCONF = 'quizbase.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [], #STATIC_ROOT = os.path.join(BASE_DIR,'static')
+        'DIRS': [
+		os.path.join(BASE_DIR,'/quiz/templates/')
+	],	
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

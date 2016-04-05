@@ -17,8 +17,6 @@ def index(request):
 
 @login_required(login_url='/login/')
 def create(request):
-	#c = {}
-	#c.update(csrf(request))
 	if request.method == 'GET':
 		quizList = Quiz.objects.order_by('name')
 		#output = ', '.join([q.name for q in quizList])
@@ -27,7 +25,6 @@ def create(request):
 		context = {'quizList': quizList,}
 		#return HttpResponse(template.render(context, request))
 		return render(request, 'create.html', context)
-		#return render_to_response(request, 'create.html', c)
 		# https://docs.djangoproject.com/en/1.8/ref/csrf/#how-to-use-it
 
 	elif request.method == 'POST':
