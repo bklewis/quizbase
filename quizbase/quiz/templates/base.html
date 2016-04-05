@@ -1,10 +1,16 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
 	<head>
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}base.css">
 		<base href="http://bklewis.master.cs.haverford.edu" />
 		<title>Quiz</title>
 	</head>
 	<body>
+	<ul id="nav">
+		<li><a href="#">Home</a></li>
+		<li><a href="/logout">Logout</a></li>
+	</ul>
 	{% block content %}{% endblock content %}
 	{% block content2 %}{% endblock content2 %}
 	</body>

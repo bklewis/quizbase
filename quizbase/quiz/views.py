@@ -11,9 +11,15 @@ from .models import Quiz
 
 # Create your views here.
 
+@login_required(login_url='/login/')
 def index(request):
 	return render(request, 'home.html')
 	#return HttpResponse("Welcome to QuizBase")
+
+def base(request):
+	return render(request, 'base.html')
+	#return HttpResponse("Welcome to QuizBase")
+
 
 @login_required(login_url='/login/')
 def create(request):
@@ -32,6 +38,7 @@ def create(request):
 		quiz.save()
 		return HttpResponse("post!")
 
+@login_required(login_url='/login/')
 def quizzes(request):
 	quizList = Quiz.objects.order_by('name')
 	#context = {'quizList': quizList,}
