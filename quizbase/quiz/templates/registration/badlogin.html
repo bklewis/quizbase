@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <base href="http://bklewis.master.cs.haverford.edu" />
+	<title>Login to QuizBase</title>
+	<link rel="stylesheet" href="normalize.css">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	{% if form.errors %}
+	<p>Your username and password combination is invalid.  Please try again.</p>
+	{% endif % }
+
+	<form name="login" action="" method="post" accept-charset="utf-8">
+		<ul>
+			<li>
+				<label for="username">Email</label>
+				<input type="email" name="usename" placeholder="yourname@email.com" required>
+			</li>
+			<li>
+				<label for="password">Password</label>
+				<input type="password" name="password" placeholder="password" required></li>
+			<li>
+				<input type="submit" value="login">
+				<input type="hidden" name="next" value="{{ next|escape }}" />
+			</li>
+		</ul>
+	</form>
+</body>
+</html>
+
+
+
