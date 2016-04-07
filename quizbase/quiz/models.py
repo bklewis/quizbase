@@ -4,7 +4,7 @@ from datetime import datetime
 # Create your models here.
 
 class Quiz(models.Model):
-	name = models.CharField(max_length=256)
+	name = models.CharField(max_length=255, unique=True)
 
 class Question(models.Model):
 	quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
