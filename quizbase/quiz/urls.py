@@ -11,4 +11,5 @@ urlpatterns = [
 	url(r'^login/', login, {'template_name': 'login.html'}),
 	url(r'^logout/', logout),
 	url(r'^base/', views.base, name='base'),
+	url(r'^quizze/', views.QuizListView.as_view(), name='quiz-list'),
 ]

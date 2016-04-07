@@ -43,24 +43,18 @@ def create(request):
 @login_required(login_url='/login/')
 def quizzes(request):
 	quizList = Quiz.objects.order_by('name')
-	#context = {'quizList': quizList,}
-	#return render(request, 'create.html', context)
-	output = ', '.join([q.name for q in quizList])
-	return HttpResponse(output)
-"""
-def login(request):
-	username = request.POST.get('username', '')
-	password = request.POST.get('password', '')
-	user = auth.authenticate(username=username, password=password)
-	if user is not None and user.is_active:
-		auth.login(request, user)
-		#return HttpResponseRedirect("/account/loggedin")
-		return HttpResponse("You are now logged in!")
-	else:
-		#return HttpResponseRedirect("/account/invalid")
-		return HttpResponse("invalid account")
-	#return HttpResponse("login")
-"""
+	context = {'quizList': quizList,}
+	return render(request, 'quizzes.html', context)
+	#output = ', '.join([q.name for q in quizList])
+	#return HttpResponse(output)
+
+#@login_required(login_url='/login/')
+class QuizListView(ListView):
+	model = Quiz
+	def get_context_data(self, **kwargs):
+		context = super(QuizListView, self).get_context_data(**kwargs)
+		context['now'] = timezone.now()
+		return context
 
 def creating(request):
 	return HttpResponse("CREATING")

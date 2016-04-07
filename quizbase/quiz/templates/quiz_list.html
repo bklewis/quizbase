@@ -1,0 +1,8 @@
+<h1>Quizzes</h1>
+<ul>
+{% for quiz in object_list %}
+    <li>{{ quiz.name }}</li>
+{% empty %}
+    <li>No articles yet.</li>
+{% endfor %}
+</ul>
