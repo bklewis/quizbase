@@ -11,7 +11,7 @@
 			<li><href="/quizzes/{{quiz.id}}/">{{quiz.name}}</a></li>
 			{% endfor %}
 		</ol>
-	<form action="/create/" method="post" enctype="multipart/form-data">{% csrf_token %}
+	<form action="/postquiz/" method="post" enctype="multipart/form-data">{% csrf_token %}
 		<label for="quizname">Enter the name of a new quiz here:</label>
 		<input type="text" name="quizname"<br>
 		<input type="submit" value="Submit">

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
@@ -47,6 +47,11 @@ def quizzes(request):
 	return render(request, 'quizzes.html', context)
 	#output = ', '.join([q.name for q in quizList])
 	#return HttpResponse(output)
+
+def postquiz(request):
+	quiz = Quiz(name=request.POST['quizname'])
+	quiz.save()
+	return HttpResponseRedirect('/quizzes/')
 
 #@login_required(login_url='/login/')
 class QuizListView(ListView):
