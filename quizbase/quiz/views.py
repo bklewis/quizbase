@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
 
-from .models import Quiz
+from .models import Quiz, Question, Answer
 
 # Create your views here.
 
@@ -40,6 +40,7 @@ def create(request):
 		quiz.save()
 		return HttpResponse("post!")
 
+#PREVENT PEOPLE FROM CREATING QUIZZES WITH NON-ALPHA CHARACTERS
 @login_required(login_url='/login/')
 def quizzes(request):
 	quizList = Quiz.objects.order_by('name')
@@ -48,10 +49,24 @@ def quizzes(request):
 	#output = ', '.join([q.name for q in quizList])
 	#return HttpResponse(output)
 
+def questions(request, quizname):
+	quiz = Quiz.objects.get(name=quizname)
+	questionList = Question.objects.filter(quiz=quiz.id)
+	output = quizname + '\n'
+	output += ', '.join([q.string for q in questionList])
+	return HttpResponse(output)
+
 def postquiz(request):
-	quiz = Quiz(name=request.POST['quizname'])
+	quizname = request.POST['quizname']
+	quiz = Quiz(name=quizname)
 	quiz.save()
-	return HttpResponseRedirect('/quizzes/')
+	return HttpResponseRedirect('/quizzes/' + quizname + '/')
+
+def postquestion(request, quizname):
+	quiz = Quiz.objects.get(name = quizname)
+	question = Question(string=request.Post['questionstring'], quiz=quiz)
+	question.save()
+	return HttpResponseRedirect('/quizzes/') #I think I need ID!
 
 #@login_required(login_url='/login/')
 class QuizListView(ListView):
