@@ -11,7 +11,7 @@
 <h4>Existing Quizzes</h4>
 {% for quiz in quizList %}
 <!--    <li>{{ quiz.name }}</li> -->
-    <li><a href="/quizzes/{{ quiz.id }}/">{{ quiz.name }}</a></li>
+    <li><a href="/quizid/{{ quiz.id }}/">{{ quiz.name }}</a></li>
 {% empty %}
     <li>You haven't created any quizzes yet.  To make your first, enter a quiz title into the box above!</li>
 {% endfor %}

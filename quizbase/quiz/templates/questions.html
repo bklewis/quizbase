@@ -1,19 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Quiz Central</h1>
-<ul>
-<form action="/postquiz/" method="post" enctype="multipart/form-data">{% csrf_token %}
-	<label for="quizname">Enter the name of a new quiz here:</label>
-	<input type="text" name="quizname"<br>
+<ol>
+<form action="/postquestion/" method="post" enctype="multipart/form-data>{% csrf_token %}
+<textarea name="myTextBox" cols="50" rows="5">
+Enter a new question here
+</textarea>
+<br />
+<input type="submit" />
+</form>
+
+<form action="/postquestion/" method="post" enctype="multipart/form-data">{% csrf_token %}
+	<label for="questionstring">Enter a new question here:</label>
+	<input type="text" name="questionstring"<br>
+	<input type="hidden" name="quizid" value={{ quizName }}>
 	<input type="submit" value="Submit">
 </form>
 <p></p>
-<h4>Existing Quizzes</h4>
-{% for quiz in quizList %}
-<!--    <li>{{ quiz.name }}</li> -->
-    <li><a href="/quiz/{{ quiz.name }}/">{{ quiz.name }}</a></li>
+<h4>{{ quizName }}</h4>
+{% for question in questionList %}
+<!--    <li>{{ question.string }}</li> -->
+    <li><a href="/quiz/{{ quiz.name }}/">{{ question.string }}</a></li>
 {% empty %}
-    <li>You haven't created any quizzes yet.  To make your first, enter a quiz title into the box above!</li>
+    <li>This quiz has no questions.  To add a question, enter the text into into the box above!</li>
 {% endfor %}
-</ul>
+</ol>
 {% endblock %}
