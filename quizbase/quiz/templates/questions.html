@@ -6,13 +6,12 @@
 <textarea name="myTextBox" cols="50" rows="5">
 Enter a new question here
 </textarea>
-<br />
 <input type="submit" />
 </form>
 
 <form action="/postquestion/" method="post" enctype="multipart/form-data">{% csrf_token %}
 	<label for="questionstring">Enter a new question here:</label>
-	<input type="text" name="questionstring"<br>
+	<input type="text" name="questionstring">
 	<input type="hidden" name="quizid" value={{ quizName }}>
 	<input type="submit" value="Submit">
 </form>

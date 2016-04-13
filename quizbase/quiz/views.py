@@ -9,6 +9,8 @@ from django.utils import timezone
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
 
+from .forms import QuestionForm
+
 from .models import Quiz, Question, Answer
 
 #TODO: Deal with Quiz names with spaces and non-alpha characters
@@ -41,8 +43,9 @@ def quizzes(request):
 	return render(request, 'quizzes.html', context)
 
 def questions(request, quizid):
+	questionForm = QuestionForm(initial={'quiz':quizid})
 	quiz = Quiz.objects.get(id=quizid)
-	questionList = Question.objects.filter(quiz=quiz.id)
+	questionList = Question.objects.filter(quiz=quizid)
 	context = {'questionList': questionList,
 			'quizName' : quiz.name,}
 	return render(request, 'questions.html', context)
@@ -54,10 +57,15 @@ def postquiz(request):
 	quiz = Quiz.objects.get(name=quizname)
 	return HttpResponseRedirect('/quizzes/' + str(quiz.id) + '/')
 
-def postquestion(request, quizname):
-	quiz = Quiz.objects.get(name = quizname)
-	question = Question(string=request.Post['questionstring'], quiz=quiz)
-	question.save()
+def postquestion(request, quizid):
+	questionForm = QuestionForm(request.POST)
+	if questionForm.is_valid():
+		#question = Question(string=questionForm.cleaned_data['string'],
+		#	quiz=quizid)
+		questionForm.save()
+	#quiz = Quiz.objects.get(name = quizname)
+	#question = Question(string=request.Post['questionstring'], quiz=quiz)
+	#question.save()
 	return HttpResponseRedirect('/quizzes/') #I think I need ID!
 
 #@login_required(login_url='/login/')
