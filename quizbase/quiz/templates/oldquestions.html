@@ -2,6 +2,13 @@
 {% block content %}
 <h1>Quiz Central</h1>
 <ol>
+<form action="/postquestion/" method="post" enctype="multipart/form-data>{% csrf_token %}
+<textarea name="myTextBox" cols="50" rows="5">
+Enter a new question here
+</textarea>
+<input type="submit" />
+</form>
+
 <form action="/postquestion/" method="post" enctype="multipart/form-data">{% csrf_token %}
 	<label for="questionstring">Enter a new question here:</label>
 	<input type="text" name="questionstring">
@@ -9,11 +16,12 @@
 	<input type="submit" value="Submit">
 </form>
 
-<form action="/postquestion/" method="post">{% csrf_token %}
+<form action="/postquestion/" method="post">
+	{% csrf_token %}
         <ol>
         {{ questionForm.as_ul }}
         </ol>
-        <input type="submit" value="Submit" />
+        <input type="submit" value="save" />
 </form>
 <p></p>
 <h4>{{ quizName }}</h4>

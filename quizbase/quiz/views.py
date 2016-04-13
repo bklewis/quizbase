@@ -47,7 +47,9 @@ def questions(request, quizid):
 	quiz = Quiz.objects.get(id=quizid)
 	questionList = Question.objects.filter(quiz=quizid)
 	context = {'questionList': questionList,
-			'quizName' : quiz.name,}
+#			'quizName' : quiz.name,}
+			'quizName' : quiz.name,
+			'questionForm': questionForm,}
 	return render(request, 'questions.html', context)
 
 def postquiz(request):
@@ -57,7 +59,7 @@ def postquiz(request):
 	quiz = Quiz.objects.get(name=quizname)
 	return HttpResponseRedirect('/quizzes/' + str(quiz.id) + '/')
 
-def postquestion(request, quizid):
+def postquestion(request):
 	questionForm = QuestionForm(request.POST)
 	if questionForm.is_valid():
 		#question = Question(string=questionForm.cleaned_data['string'],
