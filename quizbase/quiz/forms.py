@@ -3,8 +3,6 @@ from django import forms
 from .models import Quiz, Question, Answer
 
 class QuestionForm(forms.ModelForm):
-#	string = forms.CharField(widget=forms.TextArea, max_len=1000, label="question", help_text="Please enter question name")
-#	quiz = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 
 	class Meta:
 		model = Question
@@ -16,3 +14,16 @@ class QuestionForm(forms.ModelForm):
 		super(QuestionForm, self).__init__(*args, **kwargs)
 		self.fields['string'].label = "Add a new question"
 
+class AnswerForm(forms.ModelForm):
+
+	class Meta:
+		model = Answer
+		fields = ('string', 'question', 'value')
+		widgets = {'string': forms.Textarea(),
+			'value': forms.ChoiceField(choices=Answer.VALUE_CHOICES),
+			'question': forms.HiddenInput()}
+
+	def __init__(self, *args, **kwargs):
+		super(QuestionForm, self).__init__(*args, **kwargs)
+		self.fields['string'].label = "Answer Text"
+		self.fields['value'].label = "Answer Value"

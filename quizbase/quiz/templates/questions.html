@@ -2,13 +2,6 @@
 {% block content %}
 <h1>Quiz Central</h1>
 <ol>
-<form action="/postquestion/" method="post" enctype="multipart/form-data">{% csrf_token %}
-	<label for="questionstring">Enter a new question here:</label>
-	<input type="text" name="questionstring">
-	<input type="hidden" name="quizid" value={{ quizName }}>
-	<input type="submit" value="Submit">
-</form>
-
 <form action="/postquestion/" method="post">{% csrf_token %}
         <ol>
         {{ questionForm.as_ul }}

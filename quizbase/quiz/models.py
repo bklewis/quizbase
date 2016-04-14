@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
 
+
 # Create your models here.
 
 class Quiz(models.Model):
@@ -9,12 +10,19 @@ class Quiz(models.Model):
 class Question(models.Model):
 	quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
 	string = models.CharField(max_length=1000)
-#	ord = models.IntegerField()
 
 class Answer(models.Model):
+	CORRECT = 2
+	NOTWRONG = 1
+	INCORRECT = 0
+	VALUE_CHOICES = (
+		(CORRECT, 'Correct'),
+		(NOTWRONG, 'Not Wrong'),
+		(INCORRECT, 'Incorrect'),
+	)
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)
 	string = models.CharField(max_length=1000)
-	correctness = models.IntegerField()
+	value = models.IntegerField(choices=VALUE_CHOICES, default=INCORRECT)
 
 class User(models.Model):
 	first_name = models.CharField(max_length=50)

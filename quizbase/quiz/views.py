@@ -13,8 +13,6 @@ from .forms import QuestionForm
 
 from .models import Quiz, Question, Answer
 
-#TODO: Deal with Quiz names with spaces and non-alpha characters
-
 # Create your views here.
 
 @login_required(login_url='/login/')
@@ -30,7 +28,6 @@ def create(request):
 		quizList = Quiz.objects.order_by('name')
 		context = {'quizList': quizList,}
 		return render(request, 'create.html', context)
-
 	elif request.method == 'POST':
 		quiz = Quiz(name = request.POST['quizname'])
 		quiz.save()
@@ -47,7 +44,6 @@ def questions(request, quizid):
 	quiz = Quiz.objects.get(id=quizid)
 	questionList = Question.objects.filter(quiz=quizid)
 	context = {'questionList': questionList,
-#			'quizName' : quiz.name,}
 			'quizName' : quiz.name,
 			'questionForm': questionForm,}
 	return render(request, 'questions.html', context)
