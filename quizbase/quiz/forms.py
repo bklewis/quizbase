@@ -20,10 +20,13 @@ class AnswerForm(forms.ModelForm):
 		model = Answer
 		fields = ('string', 'question', 'value')
 		widgets = {'string': forms.Textarea(),
-			'value': forms.ChoiceField(choices=Answer.VALUE_CHOICES),
-			'question': forms.HiddenInput()}
+			'question': forms.HiddenInput(),
+			'value': forms.Select(choices=Answer.VALUE_CHOICES)}#forms.ChoiceField(choices=Answer.VALUE_CHOICES)}
+#			'value': forms.ChoiceField(choices=Answer.VALUE_CHOICES)}
 
 	def __init__(self, *args, **kwargs):
-		super(QuestionForm, self).__init__(*args, **kwargs)
+		super(AnswerForm, self).__init__(*args, **kwargs)
 		self.fields['string'].label = "Answer Text"
 		self.fields['value'].label = "Answer Value"
+		self.fields['value'].queryset = Answer.VALUE_CHOICES
+		

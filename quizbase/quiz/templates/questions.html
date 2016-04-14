@@ -2,17 +2,17 @@
 {% block content %}
 <h1>Quiz Central</h1>
 <ol>
-<form action="/postquestion/" method="post">{% csrf_token %}
+<form action="/postquestion/{{ quiz.id }}/" method="post">{% csrf_token %}
         <ol>
         {{ questionForm.as_ul }}
         </ol>
         <input type="submit" value="Submit" />
 </form>
 <p></p>
-<h4>{{ quizName }}</h4>
+<h4>{{ quiz.name }}</h4>
 {% for question in questionList %}
 <!--    <li>{{ question.string }}</li> -->
-    <li><a href="/quiz/{{ quiz.name }}/">{{ question.string }}</a></li>
+    <li><a href="/quizzes/{{ quiz.id }}/{{question.id}}/">{{ question.string }}</a></li>
 {% empty %}
     <li>This quiz has no questions.  To add a question, enter the text into into the box above!</li>
 {% endfor %}

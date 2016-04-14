@@ -6,10 +6,12 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
 from django.utils import timezone
 
+from django.core.urlresolvers import reverse
+
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
 
-from .forms import QuestionForm
+from .forms import QuestionForm, AnswerForm
 
 from .models import Quiz, Question, Answer
 
@@ -44,9 +46,29 @@ def questions(request, quizid):
 	quiz = Quiz.objects.get(id=quizid)
 	questionList = Question.objects.filter(quiz=quizid)
 	context = {'questionList': questionList,
-			'quizName' : quiz.name,
+			'quiz' : quiz,
 			'questionForm': questionForm,}
 	return render(request, 'questions.html', context)
+
+def answers(request, quizid, questionid):
+	quiz = Quiz.objects.get(id=quizid)
+	question = Question.objects.get(id=questionid)
+	answerForm = AnswerForm(initial={'question':questionid})
+	answerList = Answer.objects.filter(question=questionid)
+	context = {'answerList': answerList,
+			'quiz' : quiz,
+			'question': question,
+			'answerForm': answerForm,}
+	return render(request, 'answers.html', context)
+
+
+#	questionForm = QuestionForm(initial={'quiz':quizid})
+#	quiz = Quiz.objects.get(id=quizid)
+#	questionList = Question.objects.filter(quiz=quizid)
+#	context = {'questionList': questionList,
+#			'quiz' : quiz,
+#			'questionForm': questionForm,}
+#	return render(request, 'questions.html', context)
 
 def postquiz(request):
 	quizname = request.POST['quizname']
@@ -55,16 +77,25 @@ def postquiz(request):
 	quiz = Quiz.objects.get(name=quizname)
 	return HttpResponseRedirect('/quizzes/' + str(quiz.id) + '/')
 
-def postquestion(request):
+def postquestion(request, quizid): #, questionid):
 	questionForm = QuestionForm(request.POST)
 	if questionForm.is_valid():
 		#question = Question(string=questionForm.cleaned_data['string'],
 		#	quiz=quizid)
-		questionForm.save()
+		question = questionForm.save()
+		return HttpResponseRedirect(reverse(answers, args=(quizid, question.id,)))
 	#quiz = Quiz.objects.get(name = quizname)
 	#question = Question(string=request.Post['questionstring'], quiz=quiz)
 	#question.save()
-	return HttpResponseRedirect('/quizzes/') #I think I need ID!
+	return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/') #I think I need ID!
+
+def postanswer(request, quizid, questionid):
+	answerForm = AnswerForm(request.POST)
+	if answerForm.is_valid():
+		answer = answerForm.save()
+		return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/') #I think I need ID!
+	else:
+		return HttpResponse("This form is not valid")
 
 #@login_required(login_url='/login/')
 class QuizListView(ListView):
