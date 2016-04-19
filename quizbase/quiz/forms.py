@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Quiz, Question, Answer
+from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt
 
 class QuestionForm(forms.ModelForm):
 
@@ -30,3 +30,8 @@ class AnswerForm(forms.ModelForm):
 		self.fields['value'].label = "Answer Value"
 		self.fields['value'].queryset = Answer.VALUE_CHOICES
 		
+class QaForm(forms.ModelForm):
+
+	class Meta:
+		model = Quiz_attempt
+		fields=('quiz', 'user', 'attempt_no', 'start_time')

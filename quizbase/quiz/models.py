@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import datetime
-
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -24,12 +24,12 @@ class Answer(models.Model):
 	string = models.CharField(max_length=1000)
 	value = models.IntegerField(choices=VALUE_CHOICES, default=INCORRECT)
 
-class User(models.Model):
-	first_name = models.CharField(max_length=50)
-	last_name = models.CharField(max_length=50)
-	email = models.CharField(max_length=500)
-	permissions = models.IntegerField()
-	password = models.CharField(max_length=100)
+#class User(models.Model):
+#	first_name = models.CharField(max_length=50)
+#	last_name = models.CharField(max_length=50)
+#	email = models.CharField(max_length=500)
+#	permissions = models.IntegerField()
+#	password = models.CharField(max_length=100)
 
 class Quiz_attempt(models.Model):
 	quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
@@ -42,4 +42,4 @@ class Quiz_attempt(models.Model):
 class Answer_attempt(models.Model):
 	answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
 	quiz_attempt = models.ForeignKey(Quiz_attempt, on_delete=models.CASCADE)
-	submit_time = models.DateTimeField(default=datetime.now, blank=True)
+#	submit_time = models.DateTimeField(default=datetime.now, blank=True)

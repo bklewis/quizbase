@@ -41,6 +41,11 @@ def quizme(request):
 	context = {'quizList': quizList,}
 	return render(request, 'quizme.html', context)
 
+@login_required(login_url='/login/')
+def quizready(request, quizid):
+	quizAttempt = 
+	
+
 
 @login_required(login_url='/login/')
 def quizzes(request):
