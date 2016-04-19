@@ -25,17 +25,6 @@ def base(request):
 	return render(request, 'base.html')
 
 @login_required(login_url='/login/')
-def create(request):
-	if request.method == 'GET':
-		quizList = Quiz.objects.order_by('name')
-		context = {'quizList': quizList,}
-		return render(request, 'create.html', context)
-	elif request.method == 'POST':
-		quiz = Quiz(name = request.POST['quizname'])
-		quiz.save()
-		return HttpResponse("post!")
-
-@login_required(login_url='/login/')
 def quizme(request):
 	quizList = Quiz.objects.order_by('name')
 	context = {'quizList': quizList,}
