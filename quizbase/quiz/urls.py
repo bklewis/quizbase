@@ -7,8 +7,8 @@ urlpatterns = [
 #	url(r'^$', views.post_list, name='post_list'),
 #	url(r'^create/', views.create, name='create'),
 
-	url(r'^quizme/', views.quizme, name='quizme'),
 	url(r'^quizme/(?P<quizid>[0-9]+)/$', views.quizready, name='quizready'),
+	url(r'^quizme/', views.quizme, name='quizme'),
 
 	url(r'^create/', views.create, name='create'),
 	url(r'^quizzes/(?P<quizid>[0-9]+)/(?P<questionid>[0-9]+)/$', views.answers, name='answers'),

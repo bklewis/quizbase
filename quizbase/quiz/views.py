@@ -5,15 +5,15 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
 from django.utils import timezone
-
 from django.core.urlresolvers import reverse
-
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
 
+from datetime import datetime
+
 from .forms import QuestionForm, AnswerForm
 
-from .models import Quiz, Question, Answer
+from .models import Quiz, Question, Answer, Quiz_attempt
 
 # Create your views here.
 
@@ -43,8 +43,17 @@ def quizme(request):
 
 @login_required(login_url='/login/')
 def quizready(request, quizid):
-	quizAttempt = 
-	
+	quiz = Quiz.objects.get(id=quizid)
+	attemptList = Quiz_attempt.objects.filter(quiz=quizid)
+	attemptNo = len(attemptList) + 1
+	quizAttempt = Quiz_attempt(quiz=quiz, 
+			user=request.user,
+			attempt_no = attemptNo,
+			score = -1,
+			start_time = datetime.now(),
+			end_time = datetime.now())
+	quizAttempt.save()
+	return HttpResponse(str(quizAttempt.id) + "CREATED")
 
 
 @login_required(login_url='/login/')
