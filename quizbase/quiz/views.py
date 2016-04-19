@@ -107,7 +107,6 @@ def postanswer(request, quizid, questionid):
 	else:
 		return HttpResponse("This form is not valid")
 
-#@login_required(login_url='/login/')
 class QuizListView(ListView):
 	model = Quiz
 	def get_context_data(self, **kwargs):
