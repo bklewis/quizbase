@@ -30,8 +30,8 @@ class AnswerForm(forms.ModelForm):
 		self.fields['value'].label = "Answer Value"
 		self.fields['value'].queryset = Answer.VALUE_CHOICES
 		
-class QaForm(forms.ModelForm):
+#class AaForm(forms.ModelForm):
 
-	class Meta:
-		model = Quiz_attempt
-		fields=('quiz', 'user', 'attempt_no', 'start_time')
+#	class Meta:
+#		model = Answer_attempt
+#		fields=('answer')

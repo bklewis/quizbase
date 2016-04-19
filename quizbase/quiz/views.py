@@ -13,7 +13,7 @@ from datetime import datetime
 
 from .forms import QuestionForm, AnswerForm
 
-from .models import Quiz, Question, Answer, Quiz_attempt
+from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt
 
 # Create your views here.
 
@@ -44,6 +44,11 @@ def quizready(request, quizid):
 	quizAttempt.save()
 	return HttpResponse(str(quizAttempt.id) + "CREATED")
 
+def quizattempt(request, qaid):
+	qa = Quiz_attempt.objects.get(id=qaid)
+	quiz = Quiz.objects.get(id=qa.quiz.id)
+	questionsList = Question.objects.filter(quiz=quiz.id)
+	return HttpResponse(str(qaid))
 
 @login_required(login_url='/login/')
 def quizzes(request):

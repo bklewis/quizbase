@@ -6,7 +6,8 @@ urlpatterns = [
 	url(r'^$', views.index, name='index'),
 #	url(r'^$', views.post_list, name='post_list'),
 
-	url(r'^quizme/(?P<quizid>[0-9]+)/$', views.quizready, name='quizready'),
+	url(r'^quizme/ready/(?P<quizid>[0-9]+)/$', views.quizready, name='quizready'),
+	url(r'^quizme/(?P<qaid>[0-9]+)/$', views.quizattempt, name='quizattempt'),
 	url(r'^quizme/', views.quizme, name='quizme'),
 
 	url(r'^quizzes/(?P<quizid>[0-9]+)/(?P<questionid>[0-9]+)/$', views.answers, name='answers'),
