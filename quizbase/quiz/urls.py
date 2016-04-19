@@ -6,6 +6,9 @@ urlpatterns = [
 	url(r'^$', views.index, name='index'),
 #	url(r'^$', views.post_list, name='post_list'),
 #	url(r'^create/', views.create, name='create'),
+
+	url(r'^quizme/', views.quizme, name='quizme'),
+
 	url(r'^create/', views.create, name='create'),
 	url(r'^quizzes/(?P<quizid>[0-9]+)/(?P<questionid>[0-9]+)/$', views.answers, name='answers'),
 	url(r'^quizzes/(?P<quizid>[0-9]+)/$', views.questions, name='questions'),

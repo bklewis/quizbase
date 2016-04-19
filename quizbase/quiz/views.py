@@ -36,6 +36,13 @@ def create(request):
 		return HttpResponse("post!")
 
 @login_required(login_url='/login/')
+def quizme(request):
+	quizList = Quiz.objects.order_by('name')
+	context = {'quizList': quizList,}
+	return render(request, 'quizme.html', context)
+
+
+@login_required(login_url='/login/')
 def quizzes(request):
 	quizList = Quiz.objects.order_by('name')
 	context = {'quizList': quizList,}
