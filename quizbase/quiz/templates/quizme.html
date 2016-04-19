@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Quiz Central</h1>
+<ul>
+<h4>Existing Quizzes</h4>
+{% for quiz in quizList %}
+<!--    <li>{{ quiz.name }}</li> -->
+    <li><a href="/quizme/{{ quiz.id }}/">{{ quiz.name }}</a></li>
+{% empty %}
+    <li>Looks like you don't have any quizzes available at the moment. Time to relax!</li>
+{% endfor %}
+</ul>
+{% endblock %}
