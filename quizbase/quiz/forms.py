@@ -21,7 +21,7 @@ class AnswerForm(forms.ModelForm):
 		fields = ('string', 'question', 'value')
 		widgets = {'string': forms.Textarea(),
 			'question': forms.HiddenInput(),
-			'value': forms.Select(choices=Answer.VALUE_CHOICES)}#forms.ChoiceField(choices=Answer.VALUE_CHOICES)}
+			'value': forms.Select(choices=Answer.VALUE_CHOICES)}
 #			'value': forms.ChoiceField(choices=Answer.VALUE_CHOICES)}
 
 	def __init__(self, *args, **kwargs):
@@ -29,9 +29,17 @@ class AnswerForm(forms.ModelForm):
 		self.fields['string'].label = "Answer Text"
 		self.fields['value'].label = "Answer Value"
 		self.fields['value'].queryset = Answer.VALUE_CHOICES
-		
-#class AaForm(forms.ModelForm):
 
-#	class Meta:
-#		model = Answer_attempt
-#		fields=('answer')
+class QaForm(forms.Form):
+	#name = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choice=
+	def __init__(self, question, *args, **kwargs):
+		self.question = question
+		self.answers = forms.ModelMultipleChoiceField(queryset=Answer.objects.filter(question=question.id))
+		
+
+'''		
+class QaForm(forms.Form):
+	def __init__(self, data, questions, *args, **kwargs):
+		self.questions = questions
+		for question in questions:
+'''

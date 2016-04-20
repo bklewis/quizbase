@@ -47,7 +47,11 @@ def quizready(request, quizid):
 def quizattempt(request, qaid):
 	qa = Quiz_attempt.objects.get(id=qaid)
 	quiz = Quiz.objects.get(id=qa.quiz.id)
-	questionsList = Question.objects.filter(quiz=quiz.id)
+	questionList = Question.objects.filter(quiz=quiz.id)
+	qadic = {}
+	for question in questionList:
+		answerList = Answer.objects.filter(question=question.id)
+		qadic[question.string] = answerList
 	return HttpResponse(str(qaid))
 
 @login_required(login_url='/login/')
