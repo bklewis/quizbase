@@ -34,13 +34,11 @@ def quizme(request):
 
 def quizready(request, quizid):
 	quiz = Quiz.objects.get(id=quizid)
-	question = quiz.question_set.all().order_by('id')[0]
-	context = {'quiz': quiz,
-			'question': question}
+	context = {'quiz': quiz,}
 	return render(request, 'qready.html', context)
 
 @login_required(login_url='/login/')
-def quizreadypost(request, quizid, questionid):
+def postquizready(request, quizid):
 	quiz = Quiz.objects.get(id=quizid)
 	attemptList = Quiz_attempt.objects.filter(quiz=quizid)
 	attemptNo = len(attemptList) + 1
@@ -51,7 +49,16 @@ def quizreadypost(request, quizid, questionid):
 			end_time = datetime.now())
 	quizAttempt.save()
 	score = quiz.getScore()
-	return HttpResponse(str(quizAttempt.id) + "CREATED, Score = " + str(score))
+	question = quiz.question_set.all().order_by('id')[0]
+#	return HttpResponse(str(quizAttempt.id) + "CREATED, Score = " + str(score))
+	return HttpResponseRedirect(reverse(attempt, args=(quizAttempt.id, question.id,)))
+
+
+def attempt(request, qaid, questionid):
+	qa = Quiz_attempt.objects.get(id=qaid)
+	quiz = Quiz.objects.get(id=qa.quiz.id)
+	question = Question.objects.get(id=questionid)
+	return HttpResponse(question.string + "\n" + quiz.name)
 
 def quizattempt(request, qaid):
 	qa = Quiz_attempt.objects.get(id=qaid)
@@ -73,13 +80,13 @@ def quizattempt(request, qaid):
 	#return render(request, 'qa.html', context)
 #	return HttpResponse("HEY!" + str(qaid))
 
-def postquizattempt(request, qaid):
-	qaFormset = QaFormset(request.POST)
-	if qaFormset.is_valid():
+#def postquizattempt(request, qaid):
+#	qaFormset = QaFormset(request.POST)
+#	if qaFormset.is_valid():
 		#question = Question(string=questionForm.cleaned_data['string'],
 		#	quiz=quizid)
-		qaForm = qaFormset.save()
-		return HttpResponse("WHA")
+#		qaForm = qaFormset.save()
+#		return HttpResponse("WHA")
 
 @login_required(login_url='/login/')
 def quizzes(request):

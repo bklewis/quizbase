@@ -6,10 +6,12 @@ urlpatterns = [
 	url(r'^$', views.index, name='index'),
 
 	url(r'^quizme/(?P<quizid>[0-9]+)/ready/$', views.quizready, name='quizready'),
-	#url(r'^quizme/(?P<qaid>[0-9]+)/?P<questionid>[0-9]+/$', views.question, name='question'),
+	url(r'^quizme/(?P<qaid>[0-9]+)/(?P<questionid>[0-9]+)/$', views.attempt, name='attempt'),
 	#url(r'^quizme/(?P<qaid>[0-9]+)/?P<questionid>[0-9]+/$', views.submitquestion, name='submitquestion'),
 	url(r'^quizme/(?P<qaid>[0-9]+)/$', views.quizattempt, name='quizattempt'),
 	url(r'^quizme/', views.quizme, name='quizme'),
+
+	url(r'^postquizready/(?P<quizid>[0-9]+)/$', views.postquizready, name="postquizready"),
 
 	#Viewable URLs for creating quiz components
 	url(r'^quizzes/(?P<quizid>[0-9]+)/(?P<questionid>[0-9]+)/$', views.answers, name='answers'),
