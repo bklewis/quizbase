@@ -12,7 +12,7 @@
 <h4>{{ quiz.name }} - {{question.string}}</h4>
 {% for answer in answerList %}
 <!--    <li>{{ answer.string }}</li> -->
-    <li>{{ answer.string }}</li>
+    <li>{{ answer.string }} ({{answer.get_value_display}})</li>
 {% empty %}
     <li>This question has no answers.  To add an answer, enter the text into into the box above!</li>
 {% endfor %}
