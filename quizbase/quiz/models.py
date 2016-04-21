@@ -37,13 +37,6 @@ class Answer(models.Model):
 	string = models.CharField(max_length=1000)
 	value = models.IntegerField(choices=VALUE_CHOICES, default=INCORRECT)
 
-#class User(models.Model):
-#	first_name = models.CharField(max_length=50)
-#	last_name = models.CharField(max_length=50)
-#	email = models.CharField(max_length=500)
-#	permissions = models.IntegerField()
-#	password = models.CharField(max_length=100)
-
 class Quiz_attempt(models.Model):
 	quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
