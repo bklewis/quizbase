@@ -4,7 +4,6 @@ from . import views
 
 urlpatterns = [
 	url(r'^$', views.index, name='index'),
-#	url(r'^$', views.post_list, name='post_list'),
 
 	url(r'^quizme/ready/(?P<quizid>[0-9]+)/$', views.quizready, name='quizready'),
 	url(r'^quizme/(?P<qaid>[0-9]+)/$', views.quizattempt, name='quizattempt'),
@@ -12,7 +11,6 @@ urlpatterns = [
 
 	url(r'^quizzes/(?P<quizid>[0-9]+)/(?P<questionid>[0-9]+)/$', views.answers, name='answers'),
 	url(r'^quizzes/(?P<quizid>[0-9]+)/$', views.questions, name='questions'),
-#	url(r'^quizzes/(?P<quizname>\w+)/$', views.questions, name='questions'),
 	url(r'^quizzes/', views.quizzes, name='quizzes'),
 	url(r'^postquiz/', views.postquiz, name='postquiz'),
 	url(r'^postquestion/(?P<quizid>[0-9]+)/$', views.postquestion, name='postquestion'),
