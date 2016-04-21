@@ -2,7 +2,7 @@
 {% block content %}
 <h1>Quiz Central</h1>
 <ul>
-<h4>Existing Frickfrack</h4>
+<h4>Existing Quizzes</h4>
 {% for quiz in quizList %}
 <!--    <li>{{ quiz.name }}</li> -->
     <li><a href="/quizme/{{ quiz.id }}/ready/">{{ quiz.name }}</a></li>

@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
 from django.forms import formset_factory
+from django.db.models.functions import Lower
 
 from datetime import datetime
 
@@ -18,16 +19,16 @@ from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt
 
 # Create your views here.
 
-@login_required(login_url='/login/')
-def index(request):
-	return render(request, 'index.html')
-
 def base(request):
 	return render(request, 'base.html')
 
 @login_required(login_url='/login/')
+def index(request):
+	return render(request, 'index.html')
+
+@login_required(login_url='/login/')
 def quizme(request):
-	quizList = Quiz.objects.order_by('name')
+	quizList = Quiz.objects.order_by(Lower('name'))
 	context = {'quizList': quizList,}
 	return render(request, 'quizme.html', context)
 
@@ -82,7 +83,7 @@ def postquizattempt(request, qaid):
 
 @login_required(login_url='/login/')
 def quizzes(request):
-	quizList = Quiz.objects.order_by('name')
+	quizList = Quiz.objects.order_by(Lower('name'))
 	context = {'quizList': quizList,}
 	return render(request, 'quizzes.html', context)
 
