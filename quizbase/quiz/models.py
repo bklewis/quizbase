@@ -9,10 +9,10 @@ class Quiz(models.Model):
 	
 	def getScore(self):
 		"Returns max score for quiz"
-		questionList = Question.objects.filter(id=self.id)
+		questionList = Question.objects.filter(quiz=self.id)
 		score = 0
 		for q in questionList:
-			answerList = Answer.objects.filter(id=q.id)
+			answerList = Answer.objects.filter(question=q.id)
 			vList = [a.value for a in answerList]
 			twos = vList.count(2)
 			#ones = vList.count(1)
