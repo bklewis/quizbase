@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+You are about to take quiz <b>{{ quiz.name }}</b>. 
+Continuing will start the clock and begin the quiz.
+Are you ready?  
+<a href="/quizme/{{ quiz.id }}/">Yes</a></li>
+<a href="/quizme/">No</a></li>
+{% endblock %}

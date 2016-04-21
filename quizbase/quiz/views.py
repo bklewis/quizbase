@@ -31,8 +31,15 @@ def quizme(request):
 	context = {'quizList': quizList,}
 	return render(request, 'quizme.html', context)
 
-@login_required(login_url='/login/')
 def quizready(request, quizid):
+	quiz = Quiz.objects.get(id=quizid)
+	question = quiz.question_set.all().order_by('id')[0]
+	context = {'quiz': quiz,
+			'question': question}
+	return render(request, 'qready.html', context)
+
+@login_required(login_url='/login/')
+def quizreadypost(request, quizid, questionid):
 	quiz = Quiz.objects.get(id=quizid)
 	attemptList = Quiz_attempt.objects.filter(quiz=quizid)
 	attemptNo = len(attemptList) + 1
@@ -49,17 +56,20 @@ def quizattempt(request, qaid):
 	qa = Quiz_attempt.objects.get(id=qaid)
 	quiz = Quiz.objects.get(id=qa.quiz.id)
 	questionList = Question.objects.filter(quiz=quiz.id)
-	qadic = {}
-	for question in questionList:
-		answerList = Answer.objects.filter(question=question.id)
-		qadic[question.string] = answerList
-	QaFormset = formset_factory(QaForm)
-	qaFormset = QaFormset(initial=questionList)
 	context = {'quiz': quiz,
-			'questionList': questionList,
-			'qadic': qadic,
-			'qaFormset': qaFormset}
+			'questionList': questionList}
 	return render(request, 'qa.html', context)
+	#qadic = {}
+	#for question in questionList:
+	#	answerList = Answer.objects.filter(question=question.id)
+	#	qadic[question.string] = answerList
+	#QaFormset = formset_factory(QaForm)
+	#qaFormset = QaFormset(initial=questionList)
+	#context = {'quiz': quiz,
+	#		'questionList': questionList,
+	#		'qadic': qadic,
+	#		'qaFormset': qaFormset}
+	#return render(request, 'qa.html', context)
 #	return HttpResponse("HEY!" + str(qaid))
 
 def postquizattempt(request, qaid):

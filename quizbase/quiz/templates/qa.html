@@ -2,12 +2,9 @@
 {% block content %}
 <h1>Quiz Central</h1>
 <h4>{{ quiz.name }}</h4>
-<form method="post" action="">
-    {{ qaFormset.management_form }}
-    <table>
-        {% for form in qaFormset %}
-        {{ form }}
-        {% endfor %}
-    </table>
-</form>
+<form method="post" action="/quizme/{{ quizattempt.id }}/post">
+{% for question in quiz.question_set %}
+
+{% endfor %}
+
 {% endblock %}
