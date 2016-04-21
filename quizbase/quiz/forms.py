@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import formset_factory
 
 from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt
 
@@ -36,6 +37,7 @@ class QaForm(forms.Form):
 		self.question = question
 		self.answers = forms.ModelMultipleChoiceField(queryset=Answer.objects.filter(question=question.id))
 		
+
 
 '''		
 class QaForm(forms.Form):

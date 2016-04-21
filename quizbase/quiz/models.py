@@ -6,6 +6,19 @@ from django.contrib.auth.models import User
 
 class Quiz(models.Model):
 	name = models.CharField(max_length=255, unique=True)
+	
+	def getScore(self):
+		"Returns max score for quiz"
+		questionList = Question.objects.filter(id=self.id)
+		score = 0
+		for q in questionList:
+			answerList = Answer.objects.filter(id=q.id)
+			vList = [a.value for a in answerList]
+			twos = vList.count(2)
+			#ones = vList.count(1)
+			#zeros = vList.count(0)
+			score += twos
+		return score
 
 class Question(models.Model):
 	quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
@@ -35,7 +48,6 @@ class Quiz_attempt(models.Model):
 	quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	attempt_no = models.IntegerField()
-	score = models.IntegerField()
 	start_time = models.DateTimeField(default=datetime.now, blank=True)
 	end_time = models.DateTimeField()
 

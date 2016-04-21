@@ -1,0 +1,9 @@
+<form method="post" action="">
+    {{ qaFormset.management_form }}
+    <table>
+        {% for form in qaFormset %}
+        {{ form }}
+        {% endfor %}
+    </table>
+</form>
+

@@ -8,10 +8,11 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
+from django.forms import formset_factory
 
 from datetime import datetime
 
-from .forms import QuestionForm, AnswerForm
+from .forms import QuestionForm, AnswerForm, QaForm
 
 from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt
 
@@ -38,11 +39,11 @@ def quizready(request, quizid):
 	quizAttempt = Quiz_attempt(quiz=quiz, 
 			user=request.user,
 			attempt_no = attemptNo,
-			score = -1,
 			start_time = datetime.now(),
 			end_time = datetime.now())
 	quizAttempt.save()
-	return HttpResponse(str(quizAttempt.id) + "CREATED")
+	score = quiz.getScore()
+	return HttpResponse(str(quizAttempt.id) + "CREATED, Score = " + str(score))
 
 def quizattempt(request, qaid):
 	qa = Quiz_attempt.objects.get(id=qaid)
@@ -52,7 +53,22 @@ def quizattempt(request, qaid):
 	for question in questionList:
 		answerList = Answer.objects.filter(question=question.id)
 		qadic[question.string] = answerList
-	return HttpResponse(str(qaid))
+	QaFormset = formset_factory(QaForm)
+	qaFormset = QaFormset(initial=questionList)
+	context = {'quiz': quiz,
+			'questionList': questionList,
+			'qadic': qadic,
+			'qaFormset': qaFormset}
+	return render(request, 'qa.html', context)
+#	return HttpResponse("HEY!" + str(qaid))
+
+def postquizattempt(request, qaid):
+	qaFormset = QaFormset(request.POST)
+	if qaFormset.is_valid():
+		#question = Question(string=questionForm.cleaned_data['string'],
+		#	quiz=quizid)
+		qaForm = qaFormset.save()
+		return HttpResponse("WHA")
 
 @login_required(login_url='/login/')
 def quizzes(request):
