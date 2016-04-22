@@ -61,11 +61,27 @@ def postquizready(request, quizid):
 
 
 @login_required(login_url='/login/')
+def postquizattempt(request, qaid):
+    qa = Quiz_attempt.objects.get(id=qaid)
+    qa.end_time = datetime.now()
+    return HttpResponse("Finalized")
+
+
+@login_required(login_url='/login/')
+def finishquiz(request, qaid):
+    qa = Quiz_attempt.objects.get(id=qaid)
+    quiz = Quiz.objects.get(id=qa.quiz)
+    maxScore = quiz.getScore()
+    yourScore = qa.getScore()
+    return HttpResponse("You're done!  Your score is" + str(yourScore) + "/" + str(maxScore))
+
+
+@login_required(login_url='/login/')
 def attempt(request, qaid, questionid):
     qa = Quiz_attempt.objects.get(id=qaid)
     quiz = Quiz.objects.get(id=qa.quiz.id)
     question = Question.objects.get(id=questionid)
-    #attemptForm = AttemptForm(initial={'question': question})
+    # attemptForm = AttemptForm(initial={'question': question})
     attemptForm = AttemptForm(question)
     context = {'question': question,
                'attemptForm': attemptForm,
@@ -82,15 +98,16 @@ def postattempt(request, qaid, questionid):
     if attemptForm.is_valid():
         answers = attemptForm.cleaned_data['answers']
         for a in answers:
-            # return HttpResponse("Hello" + a.string + "Goodbye")
-            answer = Answer.objects.get(string=a.string)
+            answer = Answer.objects.get(id=a.id)
             Answer_attempt(answer=answer, quiz_attempt=qa).save()
-        questionList = sorted([q for q in Question.objects.filter(quiz=qa.quiz) if q.id > questionid])
-        if questionList:
-            nextQuestion = questionList[0]
-            return HttpResponseRedirect(reverse(attempt, args=(qaid, nextQuestion.id,)))
+        questionList = Question.objects.filter(quiz=qa.quiz)
+        nextQuestions = sorted([q.id for q in questionList if int(q.id) > int(questionid)])
+        if nextQuestions:
+            nextQuestion = nextQuestions[0]
+            return HttpResponseRedirect(reverse(attempt, args=(qaid, nextQuestion,)))
         else:
-            return HttpResponse("FIN" + str(questionid))
+            # return HttpResponse("FIN")
+            return HttpResponseRedirect(reverse(postquizattempt, args=(qaid,)))
     else:
         return HttpResponse("This form is not valid")
 
@@ -103,12 +120,12 @@ def quizattempt(request, qaid):
     context = {'quiz': quiz,
                'questionList': questionList}
     return render(request, 'qa.html', context)
-    #qadic = {}
+    # qadic = {}
     # for question in questionList:
     #   answerList = Answer.objects.filter(question=question.id)
     #   qadic[question.string] = answerList
-    #QaFormset = formset_factory(QaForm)
-    #qaFormset = QaFormset(initial=questionList)
+    # QaFormset = formset_factory(QaForm)
+    # qaFormset = QaFormset(initial=questionList)
     # context = {'quiz': quiz,
     #       'questionList': questionList,
     #       'qadic': qadic,
@@ -181,8 +198,8 @@ def postquestion(request, quizid):  # , questionid):
             #   quiz=quizid)
         question = questionForm.save()
         return HttpResponseRedirect(reverse(answers, args=(quizid, question.id,)))
-    #quiz = Quiz.objects.get(name = quizname)
-    #question = Question(string=request.Post['questionstring'], quiz=quiz)
+    # quiz = Quiz.objects.get(name = quizname)
+    # question = Question(string=request.Post['questionstring'], quiz=quiz)
     # question.save()
     # I think I need ID!
     return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/')
