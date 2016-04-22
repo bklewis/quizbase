@@ -19,10 +19,16 @@ class Quiz(models.Model):
             score += twos
         return score
 
+    def __str__(self):
+        return self.name
+
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     string = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.string
 
 
 class Answer(models.Model):
