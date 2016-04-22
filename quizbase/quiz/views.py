@@ -68,9 +68,33 @@ def attempt(request, qaid, questionid):
     #attemptForm = AttemptForm(initial={'question': question})
     attemptForm = AttemptForm(question)
     context = {'question': question,
-               'attemptForm': attemptForm}
+               'attemptForm': attemptForm,
+               'qaid': qaid, }
     return render(request, 'attempt.html', context)
     # return HttpResponse(question.string + ',' + quiz.name + ',' + str(qaid))
+
+
+@login_required(login_url='/login/')
+def postattempt(request, qaid, questionid):
+    qa = Quiz_attempt.objects.get(id=qaid)
+    question = Question.objects.get(id=questionid)
+    attemptForm = AttemptForm(question, request.POST)
+    if attemptForm.is_valid():
+        answers = attemptForm.answers
+        return HttpResponse("Hello" + str(type(answers)) + "Goodbye")
+
+        for string in answerStrings:
+            return HttpResponse("Hello" + str(type(string)) + "BLOOEY")
+            answer = Answer.objects.get(string=string)
+            Answer_attempt(answer=answer, quiz_attempt=qa).save()
+        questionList = sorted([q for q in Question.objects.get(quiz=qa.quiz) if q.id > questionid])
+        if questionList:
+            nextQuestion = questionList[0]
+            return HttpResponseRedirect(reverse(attempt, args=(qaid, nextQuestion.id,)))
+        else:
+            return HttpResponse("FIN")
+    else:
+        return HttpResponse("This form is not valid")
 
 
 @login_required(login_url='/login/')

@@ -35,9 +35,15 @@ class AnswerForm(forms.ModelForm):
 
 class AttemptForm(forms.Form):
     answers = forms.ModelMultipleChoiceField(queryset=Answer.objects.none(), widget=forms.CheckboxSelectMultiple())
+    # question = forms.CharField(widget=forms.HiddenInput())
 
     def __init__(self, question, *args, **kwargs):
         super(AttemptForm, self).__init__(*args, **kwargs)
         self.question = question
+        # question = self.fields['question'].initial
         self.fields['answers'].queryset = Answer.objects.filter(question=question)
         self.fields['answers'].label = ""
+
+    # def save(self, commit=True):
+    #    instance = super(AttemptForm, self).save(commit=False)
+    #    for

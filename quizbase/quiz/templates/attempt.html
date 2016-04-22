@@ -2,7 +2,7 @@
 {% block content %}
 <h1>Quiz Central</h1>
 <ol>
-<form action="/postanswer/{{ quiz.id }}/{{ question.id }}/" method="post">{% csrf_token %}
+<form action="/postattempt/{{ qaid }}/{{ question.id }}/" method="post">{% csrf_token %}
         <ol>
         {{ question.string }}
         {{ attemptForm }}

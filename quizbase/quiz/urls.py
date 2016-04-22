@@ -11,7 +11,8 @@ urlpatterns = [
     url(r'^quizme/(?P<qaid>[0-9]+)/$', views.quizattempt, name='quizattempt'),
     url(r'^quizme/', views.quizme, name='quizme'),
 
-    url(r'^postquizready/(?P<quizid>[0-9]+)/$', views.postquizready, name="postquizready"),
+    url(r'^postquizready/(?P<quizid>[0-9]+)/$', views.postquizready, name='postquizready'),
+    url(r'^postattempt/(?P<qaid>[0-9]+)/(?P<questionid>[0-9]+)/$', views.postattempt, name='postattempt'),
 
     # Viewable URLs for creating quiz components
     url(r'^quizzes/(?P<quizid>[0-9]+)/(?P<questionid>[0-9]+)/$', views.answers, name='answers'),
