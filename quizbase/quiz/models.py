@@ -60,18 +60,18 @@ class Quiz_attempt(models.Model):
         quiz = self.quiz
         questionList = Question.objects.filter(quiz=quiz.id)
         aaList = Answer_attempt.objects.filter(quiz_attempt=self.id)
-        score = 0
+        score = 0.0
         for q in questionList:
             vList = []
             answerList = Answer.objects.filter(question=q.id)
             for a in answerList:
                 for aa in aaList:
-                    if aa.answer == a.id:
+                    if aa.answer.id == a.id:
                         vList.append(a.value)
             twos = vList.count(2)
             ones = vList.count(1)
             zeros = vList.count(0)
-            score += twos * (1 / (2 ** ones)) * (0 ** zeros)
+            score += twos * (1.0 / (2 ** ones)) * (0 ** zeros)
         return score
 
 
