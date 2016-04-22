@@ -65,13 +65,14 @@ def postquizattempt(request, qaid):
     qa = Quiz_attempt.objects.get(id=qaid)
     qa.end_time = datetime.now()
     qa.save()
-    return HttpResponse("Finalized")
+    #return HttpResponse("Finalized")
+    return HttpResponseRedirect(reverse(finishquiz, args=[qaid]))
 
 
 @login_required(login_url='/login/')
 def finishquiz(request, qaid):
     qa = Quiz_attempt.objects.get(id=qaid)
-    quiz = Quiz.objects.get(id=qa.quiz)
+    quiz = Quiz.objects.get(id=qa.quiz.id)
     maxScore = quiz.getScore()
     yourScore = qa.getScore()
     return HttpResponse("You're done!  Your score is" + str(yourScore) + "/" + str(maxScore))
