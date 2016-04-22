@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Quiz Central</h1>
+<ol>
+<form action="/postanswer/{{ quiz.id }}/{{ question.id }}/" method="post">{% csrf_token %}
+        <ol>
+        {{ question.string }}<br>
+        {{ attemptForm }}
+        </ol>
+        <input type="submit" value="Submit" />
+</form>
+{% endblock %}

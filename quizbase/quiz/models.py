@@ -38,6 +38,9 @@ class Answer(models.Model):
     string = models.CharField(max_length=1000)
     value = models.IntegerField(choices=VALUE_CHOICES, default=INCORRECT)
 
+    def __str__(self):
+        return self.string
+
 
 class Quiz_attempt(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)

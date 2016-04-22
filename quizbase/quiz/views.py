@@ -13,7 +13,7 @@ from django.db.models.functions import Lower
 
 from datetime import datetime
 
-from .forms import QuestionForm, AnswerForm, QaForm
+from .forms import QuestionForm, AnswerForm, AttemptForm
 
 from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt
 
@@ -65,7 +65,12 @@ def attempt(request, qaid, questionid):
     qa = Quiz_attempt.objects.get(id=qaid)
     quiz = Quiz.objects.get(id=qa.quiz.id)
     question = Question.objects.get(id=questionid)
-    return HttpResponse(question.string + ',' + quiz.name + ',' + str(qaid))
+    #attemptForm = AttemptForm(initial={'question': question})
+    attemptForm = AttemptForm(question)
+    context = {'question': question,
+               'attemptForm': attemptForm}
+    return render(request, 'attempt.html', context)
+    # return HttpResponse(question.string + ',' + quiz.name + ',' + str(qaid))
 
 
 @login_required(login_url='/login/')
@@ -78,24 +83,24 @@ def quizattempt(request, qaid):
     return render(request, 'qa.html', context)
     #qadic = {}
     # for question in questionList:
-    #	answerList = Answer.objects.filter(question=question.id)
-    #	qadic[question.string] = answerList
+    #   answerList = Answer.objects.filter(question=question.id)
+    #   qadic[question.string] = answerList
     #QaFormset = formset_factory(QaForm)
     #qaFormset = QaFormset(initial=questionList)
     # context = {'quiz': quiz,
-    #		'questionList': questionList,
-    #		'qadic': qadic,
-    #		'qaFormset': qaFormset}
+    #       'questionList': questionList,
+    #       'qadic': qadic,
+    #       'qaFormset': qaFormset}
     # return render(request, 'qa.html', context)
-#	return HttpResponse("HEY!" + str(qaid))
+#   return HttpResponse("HEY!" + str(qaid))
 
 # def postquizattempt(request, qaid):
-#	qaFormset = QaFormset(request.POST)
-#	if qaFormset.is_valid():
+#   qaFormset = QaFormset(request.POST)
+#   if qaFormset.is_valid():
     # question = Question(string=questionForm.cleaned_data['string'],
     #   quiz=quizid)
-#		qaForm = qaFormset.save()
-#		return HttpResponse("WHA")
+#       qaForm = qaFormset.save()
+#       return HttpResponse("WHA")
 
 
 @login_required(login_url='/login/')
@@ -129,13 +134,13 @@ def answers(request, quizid, questionid):
     return render(request, 'answers.html', context)
 
 
-#	questionForm = QuestionForm(initial={'quiz':quizid})
-#	quiz = Quiz.objects.get(id=quizid)
-#	questionList = Question.objects.filter(quiz=quizid)
-#	context = {'questionList': questionList,
-#			'quiz' : quiz,
-#			'questionForm': questionForm,}
-#	return render(request, 'questions.html', context)
+#   questionForm = QuestionForm(initial={'quiz':quizid})
+#   quiz = Quiz.objects.get(id=quizid)
+#   questionList = Question.objects.filter(quiz=quizid)
+#   context = {'questionList': questionList,
+#           'quiz' : quiz,
+#           'questionForm': questionForm,}
+#   return render(request, 'questions.html', context)
 
 @login_required(login_url='/login/')
 def postquiz(request):
@@ -151,7 +156,7 @@ def postquestion(request, quizid):  # , questionid):
     questionForm = QuestionForm(request.POST)
     if questionForm.is_valid():
             # question = Question(string=questionForm.cleaned_data['string'],
-            #	quiz=quizid)
+            #   quiz=quizid)
         question = questionForm.save()
         return HttpResponseRedirect(reverse(answers, args=(quizid, question.id,)))
     #quiz = Quiz.objects.get(name = quizname)

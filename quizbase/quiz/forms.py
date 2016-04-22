@@ -33,13 +33,15 @@ class AnswerForm(forms.ModelForm):
         self.fields['value'].queryset = Answer.VALUE_CHOICES
 
 
-class QaForm(forms.Form):
+class AttemptForm(forms.Form):
     # name = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choice=
+    answers = forms.ModelMultipleChoiceField(queryset=Answer.objects.none(), widget=forms.CheckboxSelectMultiple())
 
     def __init__(self, question, *args, **kwargs):
+        super(AttemptForm, self).__init__(*args, **kwargs)
         self.question = question
-        self.answers = forms.ModelMultipleChoiceField(queryset=Answer.objects.filter(question=question.id))
-
+        self.fields['answers'].queryset = Answer.objects.filter(question=question)
+        self.fields['answers'].label = ""
 '''
 class QaForm(forms.Form):
     def __init__(self, data, questions, *args, **kwargs):
