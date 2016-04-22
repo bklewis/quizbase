@@ -4,7 +4,7 @@
 <ol>
 <form action="/postanswer/{{ quiz.id }}/{{ question.id }}/" method="post">{% csrf_token %}
         <ol>
-        {{ question.string }}<br>
+        {{ question.string }}
         {{ attemptForm }}
         </ol>
         <input type="submit" value="Submit" />

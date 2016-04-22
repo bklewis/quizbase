@@ -34,7 +34,6 @@ class AnswerForm(forms.ModelForm):
 
 
 class AttemptForm(forms.Form):
-    # name = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choice=
     answers = forms.ModelMultipleChoiceField(queryset=Answer.objects.none(), widget=forms.CheckboxSelectMultiple())
 
     def __init__(self, question, *args, **kwargs):
@@ -42,9 +41,3 @@ class AttemptForm(forms.Form):
         self.question = question
         self.fields['answers'].queryset = Answer.objects.filter(question=question)
         self.fields['answers'].label = ""
-'''
-class QaForm(forms.Form):
-    def __init__(self, data, questions, *args, **kwargs):
-        self.questions = questions
-        for question in questions:
-'''

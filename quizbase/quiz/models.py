@@ -59,8 +59,9 @@ class Quiz_attempt(models.Model):
             vList = []
             answerList = Answer.objects.filter(question=q.id)
             for a in answerList:
-                if aa.answer == a.id:
-                    vList.append(a.value)
+                for aa in aaList:
+                    if aa.answer == a.id:
+                        vList.append(a.value)
             twos = vList.count(2)
             ones = vList.count(1)
             zeros = vList.count(0)
