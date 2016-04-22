@@ -65,7 +65,6 @@ def postquizattempt(request, qaid):
     qa = Quiz_attempt.objects.get(id=qaid)
     qa.end_time = datetime.now()
     qa.save()
-    #return HttpResponse("Finalized")
     return HttpResponseRedirect(reverse(finishquiz, args=[qaid]))
 
 
