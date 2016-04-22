@@ -120,26 +120,6 @@ def quizattempt(request, qaid):
     context = {'quiz': quiz,
                'questionList': questionList}
     return render(request, 'qa.html', context)
-    # qadic = {}
-    # for question in questionList:
-    #   answerList = Answer.objects.filter(question=question.id)
-    #   qadic[question.string] = answerList
-    # QaFormset = formset_factory(QaForm)
-    # qaFormset = QaFormset(initial=questionList)
-    # context = {'quiz': quiz,
-    #       'questionList': questionList,
-    #       'qadic': qadic,
-    #       'qaFormset': qaFormset}
-    # return render(request, 'qa.html', context)
-#   return HttpResponse("HEY!" + str(qaid))
-
-# def postquizattempt(request, qaid):
-#   qaFormset = QaFormset(request.POST)
-#   if qaFormset.is_valid():
-    # question = Question(string=questionForm.cleaned_data['string'],
-    #   quiz=quizid)
-#       qaForm = qaFormset.save()
-#       return HttpResponse("WHA")
 
 
 @login_required(login_url='/login/')
@@ -173,14 +153,6 @@ def answers(request, quizid, questionid):
     return render(request, 'answers.html', context)
 
 
-#   questionForm = QuestionForm(initial={'quiz':quizid})
-#   quiz = Quiz.objects.get(id=quizid)
-#   questionList = Question.objects.filter(quiz=quizid)
-#   context = {'questionList': questionList,
-#           'quiz' : quiz,
-#           'questionForm': questionForm,}
-#   return render(request, 'questions.html', context)
-
 @login_required(login_url='/login/')
 def postquiz(request):
     quizname = request.POST['quizname']
@@ -194,14 +166,8 @@ def postquiz(request):
 def postquestion(request, quizid):  # , questionid):
     questionForm = QuestionForm(request.POST)
     if questionForm.is_valid():
-            # question = Question(string=questionForm.cleaned_data['string'],
-            #   quiz=quizid)
         question = questionForm.save()
         return HttpResponseRedirect(reverse(answers, args=(quizid, question.id,)))
-    # quiz = Quiz.objects.get(name = quizname)
-    # question = Question(string=request.Post['questionstring'], quiz=quiz)
-    # question.save()
-    # I think I need ID!
     return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/')
 
 
