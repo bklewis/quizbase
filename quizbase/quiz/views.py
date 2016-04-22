@@ -64,6 +64,7 @@ def postquizready(request, quizid):
 def postquizattempt(request, qaid):
     qa = Quiz_attempt.objects.get(id=qaid)
     qa.end_time = datetime.now()
+    qa.save()
     return HttpResponse("Finalized")
 
 
@@ -107,7 +108,7 @@ def postattempt(request, qaid, questionid):
             return HttpResponseRedirect(reverse(attempt, args=(qaid, nextQuestion,)))
         else:
             # return HttpResponse("FIN")
-            return HttpResponseRedirect(reverse(postquizattempt, args=(qaid,)))
+            return HttpResponseRedirect(reverse(postquizattempt, args=[qaid]))
     else:
         return HttpResponse("This form is not valid")
 
