@@ -80,19 +80,17 @@ def postattempt(request, qaid, questionid):
     question = Question.objects.get(id=questionid)
     attemptForm = AttemptForm(question, request.POST)
     if attemptForm.is_valid():
-        answers = attemptForm.answers
-        return HttpResponse("Hello" + str(type(answers)) + "Goodbye")
-
-        for string in answerStrings:
-            return HttpResponse("Hello" + str(type(string)) + "BLOOEY")
-            answer = Answer.objects.get(string=string)
+        answers = attemptForm.cleaned_data['answers']
+        for a in answers:
+            # return HttpResponse("Hello" + a.string + "Goodbye")
+            answer = Answer.objects.get(string=a.string)
             Answer_attempt(answer=answer, quiz_attempt=qa).save()
-        questionList = sorted([q for q in Question.objects.get(quiz=qa.quiz) if q.id > questionid])
+        questionList = sorted([q for q in Question.objects.filter(quiz=qa.quiz) if q.id > questionid])
         if questionList:
             nextQuestion = questionList[0]
             return HttpResponseRedirect(reverse(attempt, args=(qaid, nextQuestion.id,)))
         else:
-            return HttpResponse("FIN")
+            return HttpResponse("FIN" + str(questionid))
     else:
         return HttpResponse("This form is not valid")
 
