@@ -36,6 +36,7 @@ def quizme(request):
     return render(request, 'quizme.html', context)
 
 
+@login_required(login_url='/login/')
 def quizready(request, quizid):
     quiz = Quiz.objects.get(id=quizid)
     context = {'quiz': quiz, }
@@ -55,10 +56,11 @@ def postquizready(request, quizid):
     quizAttempt.save()
     score = quiz.getScore()
     question = quiz.question_set.all().order_by('id')[0]
-#	return HttpResponse(str(quizAttempt.id) + "CREATED, Score = " + str(score))
+#   return HttpResponse(str(quizAttempt.id) + "CREATED, Score = " + str(score))
     return HttpResponseRedirect(reverse(attempt, args=(quizAttempt.id, question.id,)))
 
 
+@login_required(login_url='/login/')
 def attempt(request, qaid, questionid):
     qa = Quiz_attempt.objects.get(id=qaid)
     quiz = Quiz.objects.get(id=qa.quiz.id)
@@ -66,6 +68,7 @@ def attempt(request, qaid, questionid):
     return HttpResponse(question.string + ',' + quiz.name + ',' + str(qaid))
 
 
+@login_required(login_url='/login/')
 def quizattempt(request, qaid):
     qa = Quiz_attempt.objects.get(id=qaid)
     quiz = Quiz.objects.get(id=qa.quiz.id)
@@ -90,7 +93,7 @@ def quizattempt(request, qaid):
 #	qaFormset = QaFormset(request.POST)
 #	if qaFormset.is_valid():
     # question = Question(string=questionForm.cleaned_data['string'],
-    #	quiz=quizid)
+    #   quiz=quizid)
 #		qaForm = qaFormset.save()
 #		return HttpResponse("WHA")
 
@@ -102,6 +105,7 @@ def quizzes(request):
     return render(request, 'quizzes.html', context)
 
 
+@login_required(login_url='/login/')
 def questions(request, quizid):
     questionForm = QuestionForm(initial={'quiz': quizid})
     quiz = Quiz.objects.get(id=quizid)
@@ -112,6 +116,7 @@ def questions(request, quizid):
     return render(request, 'questions.html', context)
 
 
+@login_required(login_url='/login/')
 def answers(request, quizid, questionid):
     quiz = Quiz.objects.get(id=quizid)
     question = Question.objects.get(id=questionid)
@@ -132,6 +137,7 @@ def answers(request, quizid, questionid):
 #			'questionForm': questionForm,}
 #	return render(request, 'questions.html', context)
 
+@login_required(login_url='/login/')
 def postquiz(request):
     quizname = request.POST['quizname']
     quiz = Quiz(name=quizname)
@@ -140,6 +146,7 @@ def postquiz(request):
     return HttpResponseRedirect('/quizzes/' + str(quiz.id) + '/')
 
 
+@login_required(login_url='/login/')
 def postquestion(request, quizid):  # , questionid):
     questionForm = QuestionForm(request.POST)
     if questionForm.is_valid():
@@ -154,11 +161,11 @@ def postquestion(request, quizid):  # , questionid):
     return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/')
 
 
+@login_required(login_url='/login/')
 def postanswer(request, quizid, questionid):
     answerForm = AnswerForm(request.POST)
     if answerForm.is_valid():
         answer = answerForm.save()
-        # I think I need ID!
         return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/')
     else:
         return HttpResponse("This form is not valid")

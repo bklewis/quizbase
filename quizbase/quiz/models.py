@@ -9,7 +9,7 @@ class Quiz(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
     def getScore(self):
-        "Returns max score for quiz"
+        """ Returns max score for quiz """
         questionList = Question.objects.filter(quiz=self.id)
         score = 0
         for q in questionList:
