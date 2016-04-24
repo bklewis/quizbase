@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': 'bklewis_quiz',
         'USER': 'bklewis',
         'PASSWORD': 'bklewis',
-        #os.path.join(BASE_DIR, 'db.sqlite3'),
+        # os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
