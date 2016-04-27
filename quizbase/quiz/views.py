@@ -75,7 +75,7 @@ def finishquiz(request, qaid):
     quiz = Quiz.objects.get(id=qa.quiz.id)
     maxScore = quiz.getScore()
     yourScore = qa.getScore()
-    return HttpResponse("You're done!  Your score is" + str(yourScore) + "/" + str(maxScore))
+    return HttpResponse("You're done!  Your score is " + str(yourScore) + "/" + str(maxScore))
 
 
 @login_required(login_url='/login/')

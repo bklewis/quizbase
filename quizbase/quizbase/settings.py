@@ -82,11 +82,18 @@ DATABASES = {
         'USER': 'bklewis',
         'PASSWORD': 'bklewis',
         # os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+	'TEST': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': 'test_db',
+        },
+    },
+#    'test': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': 'test_db',
+#    }
 }
 
 #TESTDB STUFF
-
 
 
 # Internationalization
