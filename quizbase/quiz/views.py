@@ -10,6 +10,7 @@ from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
 from django.forms import formset_factory
 from django.db.models.functions import Lower
+from django.contrib.auth.decorators import user_passes_test
 
 from datetime import datetime
 
@@ -123,14 +124,16 @@ def quizattempt(request, qaid):
     return render(request, 'qa.html', context)
 
 
-@login_required(login_url='/login/')
+#@login_required(login_url='/login/')
+@user_passes_test(lambda u: u.is_superuser, login_url='/')
 def quizzes(request):
     quizList = Quiz.objects.order_by(Lower('name'))
     context = {'quizList': quizList, }
     return render(request, 'quizzes.html', context)
 
 
-@login_required(login_url='/login/')
+#@login_required(login_url='/login/')
+@user_passes_test(lambda u: u.is_superuser, login_url='/')
 def questions(request, quizid):
     questionForm = QuestionForm(initial={'quiz': quizid})
     quiz = Quiz.objects.get(id=quizid)
@@ -141,7 +144,8 @@ def questions(request, quizid):
     return render(request, 'questions.html', context)
 
 
-@login_required(login_url='/login/')
+#@login_required(login_url='/login/')
+@user_passes_test(lambda u: u.is_superuser, login_url='/')
 def answers(request, quizid, questionid):
     quiz = Quiz.objects.get(id=quizid)
     question = Question.objects.get(id=questionid)
@@ -154,7 +158,8 @@ def answers(request, quizid, questionid):
     return render(request, 'answers.html', context)
 
 
-@login_required(login_url='/login/')
+#@login_required(login_url='/login/')
+@user_passes_test(lambda u: u.is_superuser, login_url='/')
 def postquiz(request):
     quizname = request.POST['quizname']
     quiz = Quiz(name=quizname)
@@ -163,7 +168,8 @@ def postquiz(request):
     return HttpResponseRedirect('/quizzes/' + str(quiz.id) + '/')
 
 
-@login_required(login_url='/login/')
+#@login_required(login_url='/login/')
+@user_passes_test(lambda u: u.is_superuser, login_url='/')
 def postquestion(request, quizid):  # , questionid):
     questionForm = QuestionForm(request.POST)
     if questionForm.is_valid():
@@ -172,7 +178,8 @@ def postquestion(request, quizid):  # , questionid):
     return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/')
 
 
-@login_required(login_url='/login/')
+#@login_required(login_url='/login/')
+@user_passes_test(lambda u: u.is_superuser, login_url='/')
 def postanswer(request, quizid, questionid):
     answerForm = AnswerForm(request.POST)
     if answerForm.is_valid():
