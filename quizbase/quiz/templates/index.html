@@ -6,9 +6,11 @@
 	</head>
 	<body>
 	<h1>Welcome to Quizbase!</h1>
+	<ul>
 	<p><a href="/quizme">Take a quiz</a>.</p>
 	{% if request.user.is_superuser %}
 	<p><a href="/quizzes">View the quiz list</a>.</p>
 	{% endif %}
+	</ul>
 	</body>
 {% endblock %}

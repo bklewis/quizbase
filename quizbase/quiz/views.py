@@ -88,7 +88,8 @@ def attempt(request, qaid, questionid):
     attemptForm = AttemptForm(question)
     context = {'question': question,
                'attemptForm': attemptForm,
-               'qaid': qaid, }
+               'qaid': qaid, 
+               'quiz': quiz,}
     return render(request, 'attempt.html', context)
 
 
@@ -110,7 +111,7 @@ def postattempt(request, qaid, questionid):
         else:
             return HttpResponseRedirect(reverse(postquizattempt, args=[qaid]))
     else:
-        return HttpResponse("This form is not valid")
+        return HttpResponse("You have to pick at least one answer! Press the back button and try again")
 
 
 @login_required(login_url='/login/')
