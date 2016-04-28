@@ -74,7 +74,7 @@ WSGI_APPLICATION = 'quizbase.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -85,14 +85,8 @@ DATABASES = {
 	'TEST': {
                 'ENGINE': 'django.db.backends.sqlite3',
                 'NAME': os.path.join(BASE_DIR, 'quizbase/test_db'),
-#		'USER': 'bklewis',
-#		'PASSWORD': 'bklewis',
         },
     },
-#    'test': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': 'test_db',
-#    }
 }
 """
 DATABASES = {
@@ -101,10 +95,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'quizbase/test_db'),
 	}
 }
-
-
-#TESTDB STUFF
-
+"""
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
