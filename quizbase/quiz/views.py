@@ -40,7 +40,10 @@ def quizme(request):
 @login_required(login_url='/login/')
 def quizready(request, quizid):
     quiz = Quiz.objects.get(id=quizid)
-    context = {'quiz': quiz, }
+    questions = Question.objects.filter(quiz=quizid)
+    numQuestions = len(questions)
+    context = {'quiz': quiz, 
+                'numQuestions' : numQuestions,}
     return render(request, 'qready.html', context)
 
 
