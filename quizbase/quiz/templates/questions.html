@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Quiz Central</h1>
-<ol>
+<h1>Create a Quiz</h1>
+<h2>{{ quiz.name }}</h2>
 <form action="/postquestion/{{ quiz.id }}/" method="post">{% csrf_token %}
-        <ol>
+	<ul>
         {{ questionForm.as_ul }}
-        </ol>
         <input type="submit" value="Submit" />
+	</ul>
 </form>
 <p></p>
-<h4>{{ quiz.name }}</h4>
+<h4>Questions</h4>
+<ol>
 {% for question in questionList %}
 <!--    <li>{{ question.string }}</li> -->
     <li><a href="/quizzes/{{ quiz.id }}/{{question.id}}/">{{ question.string }}</a></li>

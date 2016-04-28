@@ -1,17 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Quiz Central</h1>
-<ol>
-<form action="/postanswer/{{ quiz.id }}/{{ question.id }}/" method="post">{% csrf_token %}
-        <ol>
+<h1>Create a Quiz</h1>
+<h2>{{ quiz.name }}</h3>
+<h3>{{ question.string }}</h3>
+<form class="pure-form" action="/postanswer/{{ quiz.id }}/{{ question.id }}/" method="post">{% csrf_token %}
+	<h5>Enter a new answer here</h5>
+	<ul>
         {{ answerForm.as_ul }}
-        </ol>
         <input type="submit" value="Submit" />
+	</ul>
 </form>
 <p></p>
-<h4>{{ quiz.name }} - {{question.string}}</h4>
+<h4>Answers</h4>
+<ol>
 {% for answer in answerList %}
-<!--    <li>{{ answer.string }}</li> -->
     <li>{{ answer.string }} ({{answer.get_value_display}})</li>
 {% empty %}
     <li>This question has no answers.  To add an answer, enter the text into into the box above!</li>
