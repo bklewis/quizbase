@@ -60,7 +60,6 @@ def postquizready(request, quizid):
     quizAttempt.save()
     score = quiz.getScore()
     question = quiz.question_set.all().order_by('id')[0]
-#   return HttpResponse(str(quizAttempt.id) + "CREATED, Score = " + str(score))
     return HttpResponseRedirect(reverse(attempt, args=(quizAttempt.id, question.id,)))
 
 
@@ -86,13 +85,11 @@ def attempt(request, qaid, questionid):
     qa = Quiz_attempt.objects.get(id=qaid)
     quiz = Quiz.objects.get(id=qa.quiz.id)
     question = Question.objects.get(id=questionid)
-    # attemptForm = AttemptForm(initial={'question': question})
     attemptForm = AttemptForm(question)
     context = {'question': question,
                'attemptForm': attemptForm,
                'qaid': qaid, }
     return render(request, 'attempt.html', context)
-    # return HttpResponse(question.string + ',' + quiz.name + ',' + str(qaid))
 
 
 @login_required(login_url='/login/')
@@ -111,7 +108,6 @@ def postattempt(request, qaid, questionid):
             nextQuestion = nextQuestions[0]
             return HttpResponseRedirect(reverse(attempt, args=(qaid, nextQuestion,)))
         else:
-            # return HttpResponse("FIN")
             return HttpResponseRedirect(reverse(postquizattempt, args=[qaid]))
     else:
         return HttpResponse("This form is not valid")
@@ -127,7 +123,6 @@ def quizattempt(request, qaid):
     return render(request, 'qa.html', context)
 
 
-#@login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def quizzes(request):
     quizList = Quiz.objects.order_by(Lower('name'))
@@ -135,7 +130,6 @@ def quizzes(request):
     return render(request, 'quizzes.html', context)
 
 
-#@login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def questions(request, quizid):
     questionForm = QuestionForm(initial={'quiz': quizid})
@@ -147,7 +141,6 @@ def questions(request, quizid):
     return render(request, 'questions.html', context)
 
 
-#@login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def answers(request, quizid, questionid):
     quiz = Quiz.objects.get(id=quizid)
@@ -161,7 +154,6 @@ def answers(request, quizid, questionid):
     return render(request, 'answers.html', context)
 
 
-#@login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def postquiz(request):
     quizname = request.POST['quizname']
@@ -171,7 +163,6 @@ def postquiz(request):
     return HttpResponseRedirect('/quizzes/' + str(quiz.id) + '/')
 
 
-#@login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def postquestion(request, quizid):  # , questionid):
     questionForm = QuestionForm(request.POST)
@@ -181,7 +172,6 @@ def postquestion(request, quizid):  # , questionid):
     return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/')
 
 
-#@login_required(login_url='/login/')
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def postanswer(request, quizid, questionid):
     answerForm = AnswerForm(request.POST)
