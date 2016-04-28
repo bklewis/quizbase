@@ -9,3 +9,14 @@ print "Ones", ones
 print "Zeros", zeros
 score += twos * (1.0 / (2 ** ones)) * (0 ** zeros)
 print score
+
+print "NEW"
+x = 3
+y = set()
+y.add(2)
+y.add(3)
+y.add(4)
+if x in y:
+	print "WAH"
+else:
+	print "NAH"

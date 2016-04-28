@@ -92,20 +92,18 @@ def attempt(request, qaid, questionid):
 
     for a in aaList:
         answer = Answer.objects.get(id=a.answer.id)
-        takenQ = Question.objects.get(id=answer.question.id)
-        takenQs.add(int(takenQ.id))
-
-    #return HttpResponse("QID: "+str(questionid) + "set" + ','.join(str(x) for x in takenQs))
-
-    if int(questionid) in takenQs:
+        question = Question.objects.get(id=answer.question.id)
+        takenQs.add(question.id)
+    
+    if questionid in takenQs:
         questionList = Question.objects.filter(quiz=quiz.id)
         nextQuestions = sorted([q.id for q in questionList if int(q.id) not in takenQs])
         if nextQuestions:
             questionid = nextQuestions[0]
             question = Question.objects.get(id=questionid)
-            # return HttpResponse(','.join(str(x) for x in nextQuestions))
+            return HttpResponse("Question: " + question.string)
         else:
-            # return HttpResponse("BYEBYE!")
+            return HttpResponse("BYEBYE!")
             return HttpResponseRedirect(reverse(postquizattempt, args=[qaid]))
 
     attemptForm = AttemptForm(question)
@@ -130,7 +128,7 @@ def postattempt(request, qaid, questionid):
         nextQuestions = sorted([q.id for q in questionList if int(q.id) > int(questionid)])
         if nextQuestions:
             nextQuestion = nextQuestions[0]
-            # return HttpResponse("Came from Post, Question is " + str(nextQuestion))
+            return HttpResponse("Came from Post, Question is " + str(nextQuestion))
             return HttpResponseRedirect(reverse(attempt, args=(qaid, nextQuestion,)))
         else:
             return HttpResponseRedirect(reverse(postquizattempt, args=[qaid]))
