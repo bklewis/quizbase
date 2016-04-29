@@ -67,8 +67,6 @@ def postquizready(request, quizid):
     quizAttempt = Quiz_attempt(quiz=quiz,
                                user=current_user,
                                attempt_no=attemptNo,
-                               # start_time=datetime.now(),
-                               # end_time=datetime.now()
                                complete=False)
     quizAttempt.save()
     score = quiz.getScore()
@@ -80,7 +78,6 @@ def postquizready(request, quizid):
 def postquizattempt(request, qaid):
     qa = get_object_or_404(Quiz_attempt, id=qaid)
     qa.complete = True
-    # qa.end_time = datetime.now()
     qa.save()
     return HttpResponseRedirect(reverse(finishquiz, args=[qaid]))
 
