@@ -36,8 +36,7 @@ urlpatterns = [
     url(r'^postanswer/(?P<quizid>[0-9]+)/(?P<questionid>[0-9]+)/$', views.postanswer, name='postanswer'),
 
     # POST URLs for deleting quiz components
-    url(r'^deleteq/(?P<quizid>[0-9]+)/$', views.deleteq, name='deleteq'),
+    url(r'^deletequiz/(?P<quizid>[0-9]+)/$', views.deletequiz, name='deletequiz'),
     # url(r'^deletequiz/(?P<pk>[0-9]+)/$', views.DeleteQuiz.as_view(), name='deletequiz'),
 
 ]
-# <!-- - <a href="{% url 'deletequiz' pk=quiz.id %}">Delete</a></li> -->

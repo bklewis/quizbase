@@ -232,28 +232,14 @@ def postanswer(request, quizid, questionid):
 
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
-def deleteq(request, quizid):
+def deletequiz(request, quizid):
     quiz = get_object_or_404(Quiz, id=quizid)
     if request.method == 'POST':
         quiz.delete()
     return HttpResponseRedirect('/quizzes/')
 
-# def deleteq(request):
-#    quiz = get_object_or_404(Quiz, quizid)
-#    quiz.delete()
 
-
-# class DeleteQuiz(DeleteView):
-#     model = Answer
-#     success_url = reverse_lazy('index')
-
-#     template_name = 'delete.html'
-
-
-#@user_passes_test(lambda u: u.is_superuser, login_url='/')
-# def deleteanswer(request, answerid):
-
-
+@login_required(login_url='/login/')
 def results(request):
     user = request.user
     if user.is_superuser:
