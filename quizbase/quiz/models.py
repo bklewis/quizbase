@@ -86,28 +86,19 @@ class Quiz_attempt(models.Model):
         return score
 
     def as_table_headers(self):
-        output = ''
-        #output = '<table>'
-        output += '<tr>'
+        output = '<tr>'
         for field in self._meta.fields[1:]:
-            output += '<th>%s</th>' % (
-                field.name)
+            output += '<th>%s</th>' % (field.name)
+        output += '<th>%s</th>' % ("Score")
         output += '</tr>'
         return output
 
     def as_table(self):
-        output = ''
-        #output = '<table>'
-        output += '<tr>'
-        # for field in self._meta.fields[1:]:
-        #    output += '<th>%s</th>' % (
-        #        field.name)
-        #output += '</tr><tr>'
+        output = '<tr>'
         for field in self._meta.fields[1:]:
-            output += '<td>%s</td>' % (
-                getattr(self, field.name))
+            output += '<td>%s</td>' % (getattr(self, field.name))
+        output += '<td>%s</td>' % (str(self.getScore()) + '/' + str(self.quiz.getScore()))
         output += '</tr>'
-        #output += '</table>'
         return output
 
 
