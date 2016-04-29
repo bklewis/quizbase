@@ -35,7 +35,12 @@ def index(request):
 @login_required(login_url='/login/')
 def quizme(request):
     quizList = Quiz.objects.order_by(Lower('name'))
-    context = {'quizList': quizList, }
+    qList = []
+    for q in quizList:
+        questions = Question.objects.filter(quiz=q.id)
+        if questions:
+            qList.append(q)
+    context = {'quizList': qList, }
     return render(request, 'quizme.html', context)
 
 

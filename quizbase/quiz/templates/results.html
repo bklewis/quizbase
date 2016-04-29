@@ -1,12 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Quiz Results</h1>
-<ul>
-</ul>
-<p></p>
-<h4>Taken Quizzes</h4>
-<ul>
 
+<ul>
 <table>
 {{outputs.0.as_table_headers | safe }}
 {% for output in outputs %}
@@ -15,6 +11,6 @@
     <li>You haven't taken any quizzes yet. Access your quizzes <a href="/quizme/">here</a>!</li>
 {% endfor %}
 </table>
-
 </ul>
+
 {% endblock %}
