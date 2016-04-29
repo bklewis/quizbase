@@ -13,6 +13,7 @@ from django.db.models.functions import Lower
 from django.contrib.auth.decorators import user_passes_test
 
 from datetime import datetime
+import re
 
 from .forms import QuestionForm, AnswerForm, AttemptForm
 
@@ -42,8 +43,8 @@ def quizready(request, quizid):
     quiz = Quiz.objects.get(id=quizid)
     questions = Question.objects.filter(quiz=quizid)
     numQuestions = len(questions)
-    context = {'quiz': quiz, 
-                'numQuestions' : numQuestions,}
+    context = {'quiz': quiz,
+               'numQuestions': numQuestions}
     return render(request, 'qready.html', context)
 
 
@@ -95,24 +96,20 @@ def attempt(request, qaid, questionid):
         takenQ = Question.objects.get(id=answer.question.id)
         takenQs.add(int(takenQ.id))
 
-    #return HttpResponse("QID: "+str(questionid) + "set" + ','.join(str(x) for x in takenQs))
-
     if int(questionid) in takenQs:
         questionList = Question.objects.filter(quiz=quiz.id)
         nextQuestions = sorted([q.id for q in questionList if int(q.id) not in takenQs])
         if nextQuestions:
             questionid = nextQuestions[0]
             question = Question.objects.get(id=questionid)
-            # return HttpResponse(','.join(str(x) for x in nextQuestions))
         else:
-            # return HttpResponse("BYEBYE!")
             return HttpResponseRedirect(reverse(postquizattempt, args=[qaid]))
 
     attemptForm = AttemptForm(question)
     context = {'question': question,
                'attemptForm': attemptForm,
-               'qaid': qaid, 
-               'quiz': quiz,}
+               'qaid': qaid,
+               'quiz': quiz}
     return render(request, 'attempt.html', context)
 
 
@@ -130,7 +127,6 @@ def postattempt(request, qaid, questionid):
         nextQuestions = sorted([q.id for q in questionList if int(q.id) > int(questionid)])
         if nextQuestions:
             nextQuestion = nextQuestions[0]
-            # return HttpResponse("Came from Post, Question is " + str(nextQuestion))
             return HttpResponseRedirect(reverse(attempt, args=(qaid, nextQuestion,)))
         else:
             return HttpResponseRedirect(reverse(postquizattempt, args=[qaid]))
@@ -182,19 +178,22 @@ def answers(request, quizid, questionid):
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def postquiz(request):
     quizname = request.POST['quizname']
-    quiz = Quiz(name=quizname)
-    quiz.save()
+    if not (re.search('[a-zA-Z0-9]', quizname)):
+        return HttpResponseRedirect('/quizzes/')
+    if quizname not in [quiz.name for quiz in Quiz.objects.all()]:
+        quiz = Quiz(name=quizname)
+        quiz.save()
     quiz = Quiz.objects.get(name=quizname)
     return HttpResponseRedirect('/quizzes/' + str(quiz.id) + '/')
 
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
-def postquestion(request, quizid):  # , questionid):
+def postquestion(request, quizid):
     questionForm = QuestionForm(request.POST)
     if questionForm.is_valid():
         question = questionForm.save()
         return HttpResponseRedirect(reverse(answers, args=(quizid, question.id,)))
-    return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/')
+    return HttpResponseRedirect('/quizzes/' + str(quizid) + '/')
 
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
@@ -202,16 +201,4 @@ def postanswer(request, quizid, questionid):
     answerForm = AnswerForm(request.POST)
     if answerForm.is_valid():
         answer = answerForm.save()
-        return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/')
-    else:
-        return HttpResponse("This form is not valid")
-
-
-class QuizListView(ListView):
-    model = Quiz
-
-    def get_context_data(self, **kwargs):
-        context = super(QuizListView, self).get_context_data(**kwargs)
-        context['now'] = timezone.now()
-        return context
-
+    return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/')
