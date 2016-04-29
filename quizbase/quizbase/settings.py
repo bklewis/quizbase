@@ -82,7 +82,7 @@ DATABASES = {
         'USER': 'bklewis',
         'PASSWORD': 'bklewis',
         # os.path.join(BASE_DIR, 'db.sqlite3'),
-	'TEST': {
+        'TEST': {
                 'ENGINE': 'django.db.backends.sqlite3',
                 'NAME': os.path.join(BASE_DIR, 'quizbase/test_db'),
         },
@@ -93,7 +93,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'quizbase/test_db'),
-	}
+    }
 }
 """
 

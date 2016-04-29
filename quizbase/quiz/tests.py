@@ -15,8 +15,8 @@ print "HI"
 class BasicTests(TestCase):
 
     def test_root_url_resolves_to_index_view(self):
-        #response = self.client.get('/quizzes/', follow=True)
-        #self.assertRedirects(response, '/login/')
+        # response = self.client.get('/quizzes/', follow=True)
+        # self.assertRedirects(response, '/login/')
         found = resolve('/')
         self.assertEqual(found.func, index)
 

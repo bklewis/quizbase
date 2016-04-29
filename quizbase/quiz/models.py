@@ -10,7 +10,7 @@ class Quiz(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
     def getScore(self):
-        """ Returns max score for quiz """
+        """Return the max score for quiz."""
         questionList = Question.objects.filter(quiz=self.id)
         score = 0
         for q in questionList:
@@ -67,7 +67,7 @@ class Quiz_attempt(models.Model):
     end_time = models.DateTimeField()
 
     def getScore(self):
-        "Returns score for quiz attempt"
+        """Return user's score for quiz attempt."""
         quiz = self.quiz
         questionList = Question.objects.filter(quiz=quiz.id)
         aaList = Answer_attempt.objects.filter(quiz_attempt=self.id)
@@ -86,6 +86,7 @@ class Quiz_attempt(models.Model):
         return score
 
     def as_table_headers(self):
+        """Return headers for html quiz attempt results table."""
         output = '<tr>'
         for field in self._meta.fields[1:]:
             output += '<th>%s</th>' % (field.name)
@@ -94,6 +95,7 @@ class Quiz_attempt(models.Model):
         return output
 
     def as_table(self):
+        """Return quiz attempt results as an html table row."""
         output = '<tr>'
         for field in self._meta.fields[1:]:
             output += '<td>%s</td>' % (getattr(self, field.name))
