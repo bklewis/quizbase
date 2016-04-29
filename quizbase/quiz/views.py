@@ -12,8 +12,8 @@ from django.forms import formset_factory
 from django.db.models.functions import Lower
 from django.contrib.auth.decorators import user_passes_test
 
-from datetime import datetime
 import re
+from datetime import datetime
 
 from .forms import QuestionForm, AnswerForm, AttemptForm
 
@@ -86,10 +86,12 @@ def attempt(request, qaid, questionid):
     qa = Quiz_attempt.objects.get(id=qaid)
     quiz = Quiz.objects.get(id=qa.quiz.id)
     question = Question.objects.get(id=questionid)
+    answerList = Answer.objects.filter(question=questionid)
 
     aaList = Answer_attempt.objects.filter(quiz_attempt=qaid)
-
     takenQs = set()
+    if not answerList:
+        takenQs.add(int(questionid))
 
     for a in aaList:
         answer = Answer.objects.get(id=a.answer.id)
@@ -99,6 +101,11 @@ def attempt(request, qaid, questionid):
     if int(questionid) in takenQs:
         questionList = Question.objects.filter(quiz=quiz.id)
         nextQuestions = sorted([q.id for q in questionList if int(q.id) not in takenQs])
+        nextQs = nextQuestions[:]
+        for qid in nextQs:
+            answerList = Answer.objects.filter(question=qid)
+            if not answerList:
+                nextQuestions.remove(qid)
         if nextQuestions:
             questionid = nextQuestions[0]
             question = Question.objects.get(id=questionid)
