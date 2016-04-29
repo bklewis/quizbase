@@ -61,10 +61,11 @@ def quizready(request, quizid):
 @login_required(login_url='/login/')
 def postquizready(request, quizid):
     quiz = get_object_or_404(Quiz, id=quizid)
-    attemptList = Quiz_attempt.objects.filter(quiz=quizid)
+    current_user = request.user
+    attemptList = Quiz_attempt.objects.filter(quiz=quizid, user=current_user.id)
     attemptNo = len(attemptList) + 1
     quizAttempt = Quiz_attempt(quiz=quiz,
-                               user=request.user,
+                               user=current_user,
                                attempt_no=attemptNo,
                                # start_time=datetime.now(),
                                # end_time=datetime.now()

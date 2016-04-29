@@ -54,8 +54,6 @@ class Quiz_attempt(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     attempt_no = models.IntegerField()
     complete = models.BooleanField(default=False)
-    # start_time = models.DateTimeField(default=datetime.now, blank=True)
-    # end_time = models.DateTimeField()
 
     def getScore(self):
         """Return user's score for quiz attempt."""
@@ -98,4 +96,3 @@ class Quiz_attempt(models.Model):
 class Answer_attempt(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     quiz_attempt = models.ForeignKey(Quiz_attempt, on_delete=models.CASCADE)
-#   submit_time = models.DateTimeField(default=datetime.now, blank=True)
