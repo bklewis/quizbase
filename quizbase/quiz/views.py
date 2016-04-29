@@ -215,5 +215,9 @@ def postanswer(request, quizid, questionid):
 
 
 def results(request):
-    outputs = Quiz_attempt.objects.all()
+    user = request.user
+    if user.is_superuser:
+        outputs = Quiz_attempt.objects.all()
+    else:
+        outputs = Quiz_attempt.objects.filter(user=user.id)
     return render_to_response('results.html', {'outputs': outputs})
