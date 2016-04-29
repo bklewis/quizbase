@@ -39,6 +39,5 @@ urlpatterns = [
     url(r'^deletequiz/(?P<quizid>[0-9]+)/$', views.deletequiz, name='deletequiz'),
     url(r'^deletequestion/(?P<questionid>[0-9]+)/$', views.deletequestion, name='deletequestion'),
     url(r'^deleteanswer/(?P<answerid>[0-9]+)/$', views.deleteanswer, name='deleteanswer'),
-    # url(r'^deletequiz/(?P<pk>[0-9]+)/$', views.DeleteQuiz.as_view(), name='deletequiz'),
 
 ]
