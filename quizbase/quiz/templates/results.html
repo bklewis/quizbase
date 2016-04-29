@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Quiz Results</h1>
+<ul>
+</ul>
+<p></p>
+<h4>Existing Quizzes</h4>
+<ul>
+
+<html>
+<table>
+{{ output.as_table }}
+</table>
+</html>
+
+{% for quiz in quizList %}
+<!--    <li>{{ quiz.name }}</li> -->
+    <li><a href="/quizzes/{{ quiz.id }}/">{{ quiz.name }}</a></li>
+{% empty %}
+    <li>You haven't created any quizzes yet.  To make your first, enter a quiz title into the box above!</li>
+{% endfor %}
+</ul>
+{% endblock %}

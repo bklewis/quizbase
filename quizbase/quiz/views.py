@@ -12,13 +12,13 @@ from django.forms import formset_factory
 from django.db.models.functions import Lower
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import get_object_or_404
+from django.forms import ModelForm
 
 import re
 from datetime import datetime
 
 from .forms import QuestionForm, AnswerForm, AttemptForm
-
-from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt
+from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt  # , Results_form
 
 # Create your views here.
 
@@ -68,7 +68,7 @@ def postquizready(request, quizid):
 @login_required(login_url='/login/')
 def postquizattempt(request, qaid):
     qa = get_object_or_404(Quiz_attempt, id=qaid)
-    # qa.status = True
+    # qa.complete = True
     qa.end_time = datetime.now()
     qa.save()
     return HttpResponseRedirect(reverse(finishquiz, args=[qaid]))
@@ -212,3 +212,9 @@ def postanswer(request, quizid, questionid):
     if answerForm.is_valid():
         answer = answerForm.save()
     return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/')
+
+
+def results(request):
+    output = Quiz_attempt.objects.all()
+    #output = Results_form(outputs[0])
+    return render_to_response('results.html', {'output': output})

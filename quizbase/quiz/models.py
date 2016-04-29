@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 
 # Create your models here.
 
@@ -84,8 +85,26 @@ class Quiz_attempt(models.Model):
             score += twos * (1.0 / (2 ** ones)) * (0 ** zeros)
         return score
 
+    def as_table(self):
+        output = '<table>'
+        # for each field in model
+        for field in self._meta.fields:
+            # optionally skip any unwanted fields such as primary keys, etc
+            # if field.auto_created:
+            #    continue
+            output += '<tr><th>%s</th><td>%s</td></tr>' % (
+                field.name, getattr(self, field.name))
+        output += '</table>'
+        return output
+
 
 class Answer_attempt(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     quiz_attempt = models.ForeignKey(Quiz_attempt, on_delete=models.CASCADE)
-#	submit_time = models.DateTimeField(default=datetime.now, blank=True)
+#   submit_time = models.DateTimeField(default=datetime.now, blank=True)
+
+
+# class Results_Form(ModelForm):
+
+ #   class Meta:
+  #      model = Quiz_attempt
