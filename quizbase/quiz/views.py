@@ -122,7 +122,8 @@ def postattempt(request, qaid, questionid):
         answers = attemptForm.cleaned_data['answers']
         for a in answers:
             answer = Answer.objects.get(id=a.id)
-            Answer_attempt(answer=answer, quiz_attempt=qa).save()
+            if answer not in [a.answer for a in Answer_attempt.objects.filter(quiz_attempt=qa)]:
+                Answer_attempt(answer=answer, quiz_attempt=qa).save()
         questionList = Question.objects.filter(quiz=qa.quiz)
         nextQuestions = sorted([q.id for q in questionList if int(q.id) > int(questionid)])
         if nextQuestions:
