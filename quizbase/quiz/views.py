@@ -68,6 +68,7 @@ def postquizready(request, quizid):
 @login_required(login_url='/login/')
 def postquizattempt(request, qaid):
     qa = get_object_or_404(Quiz_attempt, id=qaid)
+    # qa.status = True
     qa.end_time = datetime.now()
     qa.save()
     return HttpResponseRedirect(reverse(finishquiz, args=[qaid]))

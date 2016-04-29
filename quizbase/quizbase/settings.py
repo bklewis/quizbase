@@ -74,6 +74,7 @@ WSGI_APPLICATION = 'quizbase.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+"""
 
 DATABASES = {
     'default': {
@@ -95,7 +96,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'quizbase/test_db'),
 	}
 }
-"""
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

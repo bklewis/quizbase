@@ -49,9 +49,19 @@ class Answer(models.Model):
 
 
 class Quiz_attempt(models.Model):
+    # COMPLETE = 2
+    # INPROGRESS = 1
+    # INCOMPLETE = 0
+    # STATUS_CHOICES = (
+    #     (COMPLETE, 'Correct'),
+    #     (INPROGRESS, 'Not Wrong'),
+    #     (INCOMPLETE, 'Incorrect'),
+    # )
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     attempt_no = models.IntegerField()
+    # complete = models.BooleanField(default=True)
+    # status = models.IntegerField(choices=STATUS_CHOICES, default=INPROGRESS)
     start_time = models.DateTimeField(default=datetime.now, blank=True)
     end_time = models.DateTimeField()
 
