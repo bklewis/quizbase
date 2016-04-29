@@ -35,5 +35,7 @@ urlpatterns = [
     url(r'^postquestion/(?P<quizid>[0-9]+)/$', views.postquestion, name='postquestion'),
     url(r'^postanswer/(?P<quizid>[0-9]+)/(?P<questionid>[0-9]+)/$', views.postanswer, name='postanswer'),
 
+    # POST URLs for deleting quiz components
+    url(r'^deletequiz/(?P<pk>[0-9]+)/$', views.DeleteQuiz.as_view(), name='deletequiz'),
 
 ]

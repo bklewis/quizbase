@@ -13,12 +13,16 @@ from django.db.models.functions import Lower
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import get_object_or_404
 from django.forms import ModelForm
+from django.http import Http404
+
+from django.views.generic.edit import DeleteView
+from django.core.urlresolvers import reverse_lazy
 
 import re
 from datetime import datetime
 
 from .forms import QuestionForm, AnswerForm, AttemptForm
-from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt  # , Results_form
+from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt
 
 # Create your views here.
 
@@ -225,6 +229,17 @@ def postanswer(request, quizid, questionid):
     if answerForm.is_valid():
         answer = answerForm.save()
     return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/')
+
+
+class DeleteQuiz(DeleteView):
+    model = Answer
+    success_url = reverse_lazy('index')
+
+    template_name = 'delete.html'
+
+
+#@user_passes_test(lambda u: u.is_superuser, login_url='/')
+# def deleteanswer(request, answerid):
 
 
 def results(request):
