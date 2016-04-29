@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<head>
+	<base href="http://bklewis.master.cs.haverford.edu" />
+	<title>QuizBase</title>
+</head>
+<body>
+	<h1>You did it!</h1>
+	<ul>
+		<p>Your score is {{ yourScore }} / {{ maxScore }}</p>
+		<p><a href="/">Return Home</a>.</p>
+		<p><a href="/results/">See All Results</a></p>
+	</ul>
+</body>
+{% endblock %}

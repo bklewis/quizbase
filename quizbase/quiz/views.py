@@ -85,7 +85,11 @@ def finishquiz(request, qaid):
     quiz = get_object_or_404(Quiz, id=qa.quiz.id)
     maxScore = quiz.getScore()
     yourScore = qa.getScore()
-    return HttpResponse("You're done!  Your score is " + str(yourScore) + "/" + str(maxScore))
+    context = {'yourScore': yourScore,
+               'maxScore': maxScore,
+               'quiz': quiz}
+    # return HttpResponse("You're done!  Your score is " + str(yourScore) + "/" + str(maxScore))
+    return render(request, 'finish.html', context)
 
 
 @login_required(login_url='/login/')
