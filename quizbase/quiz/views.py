@@ -11,6 +11,7 @@ from django.template.context_processors import csrf
 from django.forms import formset_factory
 from django.db.models.functions import Lower
 from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import get_object_or_404
 
 import re
 from datetime import datetime
@@ -40,7 +41,8 @@ def quizme(request):
 
 @login_required(login_url='/login/')
 def quizready(request, quizid):
-    quiz = Quiz.objects.get(id=quizid)
+    quiz = get_object_or_404(Quiz, id=quizid)
+    # quiz = Quiz.objects.get(id=quizid)
     questions = Question.objects.filter(quiz=quizid)
     numQuestions = len(questions)
     context = {'quiz': quiz,
@@ -50,7 +52,8 @@ def quizready(request, quizid):
 
 @login_required(login_url='/login/')
 def postquizready(request, quizid):
-    quiz = Quiz.objects.get(id=quizid)
+    quiz = get_object_or_404(Quiz, id=quizid)
+    # quiz = Quiz.objects.get(id=quizid)
     attemptList = Quiz_attempt.objects.filter(quiz=quizid)
     attemptNo = len(attemptList) + 1
     quizAttempt = Quiz_attempt(quiz=quiz,
@@ -66,7 +69,8 @@ def postquizready(request, quizid):
 
 @login_required(login_url='/login/')
 def postquizattempt(request, qaid):
-    qa = Quiz_attempt.objects.get(id=qaid)
+    qa = get_object_or_404(Quiz_attempt, id=qaid)
+    # qa = Quiz_attempt.objects.get(id=qaid)
     qa.end_time = datetime.now()
     qa.save()
     return HttpResponseRedirect(reverse(finishquiz, args=[qaid]))
@@ -74,8 +78,10 @@ def postquizattempt(request, qaid):
 
 @login_required(login_url='/login/')
 def finishquiz(request, qaid):
-    qa = Quiz_attempt.objects.get(id=qaid)
-    quiz = Quiz.objects.get(id=qa.quiz.id)
+    qa = get_object_or_404(Quiz_attempt, id=qaid)
+    # qa = Quiz_attempt.objects.get(id=qaid)
+    quiz = get_object_or_404(Quiz, id=qa.quiz.id)
+    # quiz = Quiz.objects.get(id=qa.quiz.id)
     maxScore = quiz.getScore()
     yourScore = qa.getScore()
     return HttpResponse("You're done!  Your score is " + str(yourScore) + "/" + str(maxScore))
@@ -83,9 +89,12 @@ def finishquiz(request, qaid):
 
 @login_required(login_url='/login/')
 def attempt(request, qaid, questionid):
-    qa = Quiz_attempt.objects.get(id=qaid)
-    quiz = Quiz.objects.get(id=qa.quiz.id)
-    question = Question.objects.get(id=questionid)
+    qa = get_object_or_404(Quiz_attempt, id=qaid)
+    # qa = Quiz_attempt.objects.get(id=qaid)
+    quiz = get_object_or_404(Quiz, id=qa.quiz.id)
+    # quiz = Quiz.objects.get(id=qa.quiz.id)
+    question = get_object_or_404(Question, id=questionid)
+    # question = Question.objects.get(id=questionid)
     answerList = Answer.objects.filter(question=questionid)
 
     aaList = Answer_attempt.objects.filter(quiz_attempt=qaid)
@@ -94,8 +103,10 @@ def attempt(request, qaid, questionid):
         takenQs.add(int(questionid))
 
     for a in aaList:
-        answer = Answer.objects.get(id=a.answer.id)
-        takenQ = Question.objects.get(id=answer.question.id)
+        answer = get_object_or_404(Answer, id=a.answer.id)
+        # answer = Answer.objects.get(id=a.answer.id)
+        takenQ = get_object_or_404(Question, id=answer.question.id)
+        # takenQ = Question.objects.get(id=answer.question.id)
         takenQs.add(int(takenQ.id))
 
     if int(questionid) in takenQs:
@@ -108,7 +119,8 @@ def attempt(request, qaid, questionid):
                 nextQuestions.remove(qid)
         if nextQuestions:
             questionid = nextQuestions[0]
-            question = Question.objects.get(id=questionid)
+            question = get_object_or_404(Question, id=questionid)
+            # question = Question.objects.get(id=questionid)
         else:
             return HttpResponseRedirect(reverse(postquizattempt, args=[qaid]))
 
@@ -122,13 +134,16 @@ def attempt(request, qaid, questionid):
 
 @login_required(login_url='/login/')
 def postattempt(request, qaid, questionid):
-    qa = Quiz_attempt.objects.get(id=qaid)
-    question = Question.objects.get(id=questionid)
+    qa = get_object_or_404(Quiz_attempt, id=qaid)
+    # qa = Quiz_attempt.objects.get(id=qaid)
+    question = get_object_or_404(Question, id=questionid)
+    # question = Question.objects.get(id=questionid)
     attemptForm = AttemptForm(question, request.POST)
     if attemptForm.is_valid():
         answers = attemptForm.cleaned_data['answers']
         for a in answers:
-            answer = Answer.objects.get(id=a.id)
+            answer = get_object_or_404(Answer, id=a.id)
+            # answer = Answer.objects.get(id=a.id)
             if answer not in [a.answer for a in Answer_attempt.objects.filter(quiz_attempt=qa)]:
                 Answer_attempt(answer=answer, quiz_attempt=qa).save()
         questionList = Question.objects.filter(quiz=qa.quiz)
@@ -144,8 +159,10 @@ def postattempt(request, qaid, questionid):
 
 @login_required(login_url='/login/')
 def quizattempt(request, qaid):
-    qa = Quiz_attempt.objects.get(id=qaid)
-    quiz = Quiz.objects.get(id=qa.quiz.id)
+    qa = get_object_or_404(Quiz_attempt, id=qaid)
+    # qa = Quiz_attempt.objects.get(id=qaid)
+    quiz = get_object_or_404(Quiz, id=qa.quiz.id)
+    # quiz = Quiz.objects.get(id=qa.quiz.id)
     questionList = Question.objects.filter(quiz=quiz.id)
     context = {'quiz': quiz,
                'questionList': questionList}
@@ -162,7 +179,8 @@ def quizzes(request):
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def questions(request, quizid):
     questionForm = QuestionForm(initial={'quiz': quizid})
-    quiz = Quiz.objects.get(id=quizid)
+    quiz = get_object_or_404(Quiz, id=quizid)
+    # quiz = Quiz.objects.get(id=quizid)
     questionList = Question.objects.filter(quiz=quizid)
     context = {'questionList': questionList,
                'quiz': quiz,
@@ -172,8 +190,10 @@ def questions(request, quizid):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def answers(request, quizid, questionid):
-    quiz = Quiz.objects.get(id=quizid)
-    question = Question.objects.get(id=questionid)
+    quiz = get_object_or_404(Quiz, id=quizid)
+    question = get_object_or_404(Question, id=questionid)
+    # quiz = Quiz.objects.get(id=quizid)
+    # question = Question.objects.get(id=questionid)
     answerForm = AnswerForm(initial={'question': questionid})
     answerList = Answer.objects.filter(question=questionid)
     context = {'answerList': answerList,
@@ -191,7 +211,8 @@ def postquiz(request):
     if quizname not in [quiz.name for quiz in Quiz.objects.all()]:
         quiz = Quiz(name=quizname)
         quiz.save()
-    quiz = Quiz.objects.get(name=quizname)
+    quiz = get_object_or_404(Quiz, name=quizname)
+    # quiz = Quiz.objects.get(name=quizname)
     return HttpResponseRedirect('/quizzes/' + str(quiz.id) + '/')
 
 
