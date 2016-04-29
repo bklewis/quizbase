@@ -231,11 +231,23 @@ def postanswer(request, quizid, questionid):
     return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/')
 
 
-class DeleteQuiz(DeleteView):
-    model = Answer
-    success_url = reverse_lazy('index')
+@user_passes_test(lambda u: u.is_superuser, login_url='/')
+def deleteq(request, quizid):
+    quiz = get_object_or_404(Quiz, id=quizid)
+    if request.method == 'POST':
+        quiz.delete()
+    return HttpResponseRedirect('/quizzes/')
 
-    template_name = 'delete.html'
+# def deleteq(request):
+#    quiz = get_object_or_404(Quiz, quizid)
+#    quiz.delete()
+
+
+# class DeleteQuiz(DeleteView):
+#     model = Answer
+#     success_url = reverse_lazy('index')
+
+#     template_name = 'delete.html'
 
 
 #@user_passes_test(lambda u: u.is_superuser, login_url='/')
