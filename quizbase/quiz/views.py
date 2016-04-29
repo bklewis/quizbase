@@ -95,6 +95,8 @@ def finishquiz(request, qaid):
 @login_required(login_url='/login/')
 def attempt(request, qaid, questionid):
     qa = get_object_or_404(Quiz_attempt, id=qaid)
+    if qa.complete:
+        return HttpResponseRedirect(reverse(finishquiz, args=[qaid]))
     quiz = get_object_or_404(Quiz, id=qa.quiz.id)
     question = get_object_or_404(Question, id=questionid)
     answerList = Answer.objects.filter(question=questionid)
@@ -134,6 +136,8 @@ def attempt(request, qaid, questionid):
 @login_required(login_url='/login/')
 def postattempt(request, qaid, questionid):
     qa = get_object_or_404(Quiz_attempt, id=qaid)
+    if qa.complete:
+        return HttpResponseRedirect(reverse(finishquiz, args=[qaid]))
     question = get_object_or_404(Question, id=questionid)
     attemptForm = AttemptForm(question, request.POST)
     if attemptForm.is_valid():
