@@ -54,9 +54,9 @@ class Quiz_attempt(models.Model):
     # INPROGRESS = 1
     # INCOMPLETE = 0
     # STATUS_CHOICES = (
-    #     (COMPLETE, 'Correct'),
-    #     (INPROGRESS, 'Not Wrong'),
-    #     (INCOMPLETE, 'Incorrect'),
+    #     (COMPLETE, 'Complete'),
+    #     (INPROGRESS, 'In progress'),
+    #     (INCOMPLETE, 'Incomplete'),
     # )
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

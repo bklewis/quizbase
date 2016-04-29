@@ -88,7 +88,6 @@ def finishquiz(request, qaid):
     context = {'yourScore': yourScore,
                'maxScore': maxScore,
                'quiz': quiz}
-    # return HttpResponse("You're done!  Your score is " + str(yourScore) + "/" + str(maxScore))
     return render(request, 'finish.html', context)
 
 
