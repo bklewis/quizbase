@@ -4,20 +4,17 @@
 <ul>
 </ul>
 <p></p>
-<h4>Existing Quizzes</h4>
+<h4>Taken Quizzes</h4>
 <ul>
 
-<html>
 <table>
-{{ output.as_table }}
-</table>
-</html>
-
-{% for quiz in quizList %}
-<!--    <li>{{ quiz.name }}</li> -->
-    <li><a href="/quizzes/{{ quiz.id }}/">{{ quiz.name }}</a></li>
+{{outputs.0.as_table_headers | safe }}
+{% for output in outputs %}
+	    {{ output.as_table | safe }}
 {% empty %}
-    <li>You haven't created any quizzes yet.  To make your first, enter a quiz title into the box above!</li>
+    <li>You haven't taken any quizzes yet. Access your quizzes <a href="/quizme/">here</a>!</li>
 {% endfor %}
+</table>
+
 </ul>
 {% endblock %}

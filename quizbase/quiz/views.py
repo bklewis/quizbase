@@ -215,6 +215,5 @@ def postanswer(request, quizid, questionid):
 
 
 def results(request):
-    output = Quiz_attempt.objects.all()
-    #output = Results_form(outputs[0])
-    return render_to_response('results.html', {'output': output})
+    outputs = Quiz_attempt.objects.all()
+    return render_to_response('results.html', {'outputs': outputs})
