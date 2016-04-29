@@ -50,21 +50,12 @@ class Answer(models.Model):
 
 
 class Quiz_attempt(models.Model):
-    # COMPLETE = 2
-    # INPROGRESS = 1
-    # INCOMPLETE = 0
-    # STATUS_CHOICES = (
-    #     (COMPLETE, 'Complete'),
-    #     (INPROGRESS, 'In progress'),
-    #     (INCOMPLETE, 'Incomplete'),
-    # )
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     attempt_no = models.IntegerField()
-    # complete = models.BooleanField(default=True)
-    # status = models.IntegerField(choices=STATUS_CHOICES, default=INPROGRESS)
-    start_time = models.DateTimeField(default=datetime.now, blank=True)
-    end_time = models.DateTimeField()
+    complete = models.BooleanField(default=False)
+    # start_time = models.DateTimeField(default=datetime.now, blank=True)
+    # end_time = models.DateTimeField()
 
     def getScore(self):
         """Return user's score for quiz attempt."""
