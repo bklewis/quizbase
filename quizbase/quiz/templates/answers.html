@@ -1,22 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Create a Quiz</h1>
-<h2>{{ quiz.name }}</h3>
+<h2>{{ quiz.name }}</h2>
 <h3>{{ question.string }}</h3>
 <form class="pure-form" action="/postanswer/{{ quiz.id }}/{{ question.id }}/" method="post">{% csrf_token %}
 	<h5>Enter a new answer here</h5>
 	<ul>
-        {{ answerForm.as_ul }}
-        <input type="submit" value="Submit" />
+		{{ answerForm.as_table }}
+		<input type="submit" value="Submit" />
 	</ul>
 </form>
-<p></p>
 <h4>Answers</h4>
 <ol>
-{% for answer in answerList %}
-    <li>{{ answer.string }} ({{answer.get_value_display}})</li>
-{% empty %}
-    <li>This question has no answers.  To add an answer, enter the text into into the box above!</li>
-{% endfor %}
+	<table>
+		{% for answer in answerList %}
+			<tr><td><li>{{ answer.string }}</li></td>
+			<td> [{{answer.get_value_display}}]</td>
+			<td><form method="post" action='/deleteanswer/{{ answer.id }}/'>{% csrf_token %}<input type="submit" value="Delete"/></form></td></tr>
+		{% empty %}
+			<li>This question has no answers.  To add an answer, enter the text into into the box above!</li>
+		{% endfor %}
+	</table>
 </ol>
 {% endblock %}

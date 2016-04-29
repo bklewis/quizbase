@@ -4,18 +4,20 @@
 <h2>{{ quiz.name }}</h2>
 <form action="/postquestion/{{ quiz.id }}/" method="post">{% csrf_token %}
 	<ul>
-        {{ questionForm.as_ul }}
+        {{ questionForm.as_table }}
         <input type="submit" value="Submit" />
 	</ul>
 </form>
 <p></p>
 <h4>Questions</h4>
 <ol>
+<table>
 {% for question in questionList %}
-<!--    <li>{{ question.string }}</li> -->
-    <li><a href="/quizzes/{{ quiz.id }}/{{question.id}}/">{{ question.string }}</a></li>
+    <tr><td><li><a href="/quizzes/{{ quiz.id }}/{{question.id}}/">{{ question.string }}</a></li></td>
+    <td><form method="post" action='/deletequestion/{{ question.id }}/'>{% csrf_token %}<input type="submit" value="Delete"/></form></td></tr>
 {% empty %}
     <li>This quiz has no questions.  To add a question, enter the text into into the box above!</li>
 {% endfor %}
+</table>
 </ol>
 {% endblock %}

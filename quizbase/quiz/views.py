@@ -239,6 +239,26 @@ def deletequiz(request, quizid):
     return HttpResponseRedirect('/quizzes/')
 
 
+@user_passes_test(lambda u: u.is_superuser, login_url='/')
+def deletequestion(request, questionid):
+    question = get_object_or_404(Question, id=questionid)
+    quizid = question.quiz.id
+    if request.method == 'POST':
+        question.delete()
+    return HttpResponseRedirect('/quizzes/' + str(quizid) + '/')
+
+
+@user_passes_test(lambda u: u.is_superuser, login_url='/')
+def deleteanswer(request, answerid):
+    answer = get_object_or_404(Answer, id=answerid)
+    questionid = answer.question.id
+    question = get_object_or_404(Question, id=questionid)
+    quizid = question.quiz.id
+    if request.method == 'POST':
+        answer.delete()
+    return HttpResponseRedirect('/quizzes/' + str(quizid) + '/' + str(questionid) + '/')
+
+
 @login_required(login_url='/login/')
 def results(request):
     user = request.user
