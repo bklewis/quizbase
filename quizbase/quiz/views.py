@@ -186,10 +186,7 @@ def quizattempt(request, qaid):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def quizzes(request):
-    """
-    Display the list of all quizzes.
-    Allow user to create a new quiz.
-    """
+    """Display all quizzes and allow user to create new quiz."""
     quizList = Quiz.objects.order_by(Lower('name'))
     context = {'quizList': quizList, }
     return render(request, 'quizzes.html', context)
@@ -197,10 +194,7 @@ def quizzes(request):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def questions(request, quizid):
-    """
-    Display the list of questions for a given quiz.
-    Allow user to create a new question.
-    """
+    """Display questions for a quiz and allow user to create new question."""
     questionForm = QuestionForm(initial={'quiz': quizid})
     quiz = get_object_or_404(Quiz, id=quizid)
     questionList = Question.objects.filter(quiz=quizid)
@@ -212,10 +206,7 @@ def questions(request, quizid):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def answers(request, quizid, questionid):
-    """
-    Display the list of answers for a given question.
-    Allow user to create a new answer.
-    """
+    """Display answers for a question and allow user to create new answer."""
     quiz = get_object_or_404(Quiz, id=quizid)
     question = get_object_or_404(Question, id=questionid)
     answerForm = AnswerForm(initial={'question': questionid})
