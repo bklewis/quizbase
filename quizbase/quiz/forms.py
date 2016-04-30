@@ -1,3 +1,4 @@
+"""All forms for QuizBase."""
 from django import forms
 from django.forms import formset_factory
 
@@ -5,7 +6,6 @@ from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt
 
 
 class QuestionForm(forms.ModelForm):
-
     """Create a question associated with a quiz."""
 
     class Meta:
@@ -15,12 +15,12 @@ class QuestionForm(forms.ModelForm):
                    'quiz': forms.HiddenInput()}
 
     def __init__(self, *args, **kwargs):
+        """Create new question-creation form."""
         super(QuestionForm, self).__init__(*args, **kwargs)
         self.fields['string'].label = "Add a new question"
 
 
 class AnswerForm(forms.ModelForm):
-
     """Create an answer associated with a question/quiz."""
 
     class Meta:
@@ -31,6 +31,7 @@ class AnswerForm(forms.ModelForm):
                    'value': forms.Select(choices=Answer.VALUE_CHOICES)}
 
     def __init__(self, *args, **kwargs):
+        """Create new answer-creation form."""
         super(AnswerForm, self).__init__(*args, **kwargs)
         self.fields['string'].label = "Answer Text"
         self.fields['value'].label = "Answer Value"
@@ -38,12 +39,12 @@ class AnswerForm(forms.ModelForm):
 
 
 class AttemptForm(forms.Form):
-
     """Allow a user to post their response to question."""
 
     answers = forms.ModelMultipleChoiceField(queryset=Answer.objects.none(), widget=forms.CheckboxSelectMultiple())
 
     def __init__(self, question, *args, **kwargs):
+        """Create new question-reponse form."""
         super(AttemptForm, self).__init__(*args, **kwargs)
         self.question = question
         self.fields['answers'].queryset = Answer.objects.filter(question=question)
