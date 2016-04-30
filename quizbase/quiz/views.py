@@ -27,10 +27,6 @@ from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt
 # Create your views here.
 
 
-def base(request):
-    return render(request, 'base.html')
-
-
 @login_required(login_url='/login/')
 def index(request):
     return render(request, 'index.html')

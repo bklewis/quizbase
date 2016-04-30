@@ -8,7 +8,6 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/', login, {'template_name': 'login.html'}),
     url(r'^logout/', logout, {'template_name': 'logout.html'}),
-    url(r'^base/', views.base, name='base'),
 
     # Viewable URLs for taking a quiz
     url(r'^quizme/(?P<quizid>[0-9]+)/ready/$', views.quizready, name='quizready'),
