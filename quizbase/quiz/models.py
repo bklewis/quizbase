@@ -1,3 +1,5 @@
+"""All models for QuizBase."""
+
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -7,6 +9,8 @@ from django.forms import ModelForm
 
 
 class Quiz(models.Model):
+    """Quiz object with name."""
+
     name = models.CharField(max_length=255, unique=True)
 
     def getScore(self):
@@ -21,18 +25,24 @@ class Quiz(models.Model):
         return score
 
     def __str__(self):
+        """Return the name of the quiz as a string."""
         return self.name
 
 
 class Question(models.Model):
+    """Question object with string and foriegn key quiz."""
+
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     string = models.CharField(max_length=1000)
 
     def __str__(self):
+        """Return the question string."""
         return self.string
 
 
 class Answer(models.Model):
+    """Answer object with string, value, and foriegn key question."""
+
     CORRECT = 2
     NOTWRONG = 1
     INCORRECT = 0
@@ -46,10 +56,19 @@ class Answer(models.Model):
     value = models.IntegerField(choices=VALUE_CHOICES, default=INCORRECT)
 
     def __str__(self):
+        """Return the answer string."""
         return self.string
 
 
 class Quiz_attempt(models.Model):
+    """
+    Quiz attempt with associated user and quiz.
+
+    Quiz attempt has the quiz the user was trying to take.
+    It also has the user taking it, the nth attempt,
+    and whether or not the quiz was completed.
+    """
+
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     attempt_no = models.IntegerField()
@@ -94,5 +113,12 @@ class Quiz_attempt(models.Model):
 
 
 class Answer_attempt(models.Model):
+    """
+    Answer attempt with associated answer and quiz attempt.
+
+    An answer attempt has the answer the user selected.
+    It also has the quiz attempt with which the selection was associated.
+    """
+
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     quiz_attempt = models.ForeignKey(Quiz_attempt, on_delete=models.CASCADE)
