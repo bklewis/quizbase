@@ -65,3 +65,13 @@ class GetThings(TestCase):
         quiz = Quiz.objects.create(name="quiz")
         getQuiz = Quiz.objects.get(id=quiz.id)
         self.assertEqual(quiz, getQuiz)
+
+
+class TakeThings(TestCase):
+
+    def setUp(self):
+        self.admin = User.objects.create_superuser('admin', 'test@email.com', 'password')
+        self.admin.save()
+        self.client.login(username=self.admin.username, password=self.admin.password)
+        quiz = Quiz(name="testquiz")
+        quiz.save()
