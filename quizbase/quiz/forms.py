@@ -6,6 +6,8 @@ from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt
 
 class QuestionForm(forms.ModelForm):
 
+    """Create a question associated with a quiz."""
+
     class Meta:
         model = Question
         fields = ('string', 'quiz')
@@ -18,6 +20,8 @@ class QuestionForm(forms.ModelForm):
 
 
 class AnswerForm(forms.ModelForm):
+
+    """Create an answer associated with a question/quiz."""
 
     class Meta:
         model = Answer
@@ -34,6 +38,9 @@ class AnswerForm(forms.ModelForm):
 
 
 class AttemptForm(forms.Form):
+
+    """Allow a user to post their response to question."""
+
     answers = forms.ModelMultipleChoiceField(queryset=Answer.objects.none(), widget=forms.CheckboxSelectMultiple())
 
     def __init__(self, question, *args, **kwargs):
