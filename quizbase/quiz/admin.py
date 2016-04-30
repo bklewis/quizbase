@@ -1,3 +1,4 @@
+"""Admin for QuizBase."""
 from django.contrib import admin
 
 # Register your models here.
