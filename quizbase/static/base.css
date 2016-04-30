@@ -33,7 +33,9 @@ body {
 }
 
 
-input[type=text], select {
+input[type=text], 
+input[type=password], 
+select {
     padding: 6px 6px;
     margin: 8px 8px;
     display: inline-block;
@@ -67,12 +69,25 @@ input[type=submit]:hover {
 	margin-left: 0px;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
+.login {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#loginbut {
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 278px;
+}
+
+.centerme{
+	margin-left: 100px;
+}
+
+h1,h2,h3,
+h4,h5,h6,
 table,
 form,
 .options {
