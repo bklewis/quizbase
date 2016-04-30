@@ -1,4 +1,5 @@
-from django.shortcuts import render
+"""All views for QuizBase."""
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.contrib import auth
@@ -6,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
 from django.utils import timezone
 from django.core.urlresolvers import reverse
+from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
 from django.forms import formset_factory
@@ -29,11 +31,13 @@ from .models import Quiz, Question, Answer, Quiz_attempt, Answer_attempt
 
 @login_required(login_url='/login/')
 def index(request):
+    """Display the home page."""
     return render(request, 'index.html')
 
 
 @login_required(login_url='/login/')
 def quizme(request):
+    """Display quizzes available for user to take."""
     quizList = Quiz.objects.order_by(Lower('name'))
     qList = []
     for q in quizList:
@@ -46,6 +50,7 @@ def quizme(request):
 
 @login_required(login_url='/login/')
 def quizready(request, quizid):
+    """Post new quiz attempt if user is ready to start."""
     quiz = get_object_or_404(Quiz, id=quizid)
     questions = Question.objects.filter(quiz=quizid)
     numQuestions = len(questions)
@@ -56,6 +61,7 @@ def quizready(request, quizid):
 
 @login_required(login_url='/login/')
 def postquizready(request, quizid):
+    """Create new quiz attempt."""
     quiz = get_object_or_404(Quiz, id=quizid)
     current_user = request.user
     attemptList = Quiz_attempt.objects.filter(quiz=quizid, user=current_user.id)
@@ -72,6 +78,7 @@ def postquizready(request, quizid):
 
 @login_required(login_url='/login/')
 def postquizattempt(request, qaid):
+    """Mark quiz attempt as complete."""
     qa = get_object_or_404(Quiz_attempt, id=qaid)
     qa.complete = True
     qa.save()
@@ -80,6 +87,7 @@ def postquizattempt(request, qaid):
 
 @login_required(login_url='/login/')
 def finishquiz(request, qaid):
+    """Display user's final score for completed quiz attempt."""
     qa = get_object_or_404(Quiz_attempt, id=qaid)
     quiz = get_object_or_404(Quiz, id=qa.quiz.id)
     maxScore = quiz.getScore()
@@ -92,6 +100,7 @@ def finishquiz(request, qaid):
 
 @login_required(login_url='/login/')
 def attempt(request, qaid, questionid):
+    """Display question and answer form from a quiz."""
     qa = get_object_or_404(Quiz_attempt, id=qaid)
     if qa.complete:
         return HttpResponseRedirect(reverse(finishquiz, args=[qaid]))
@@ -99,6 +108,7 @@ def attempt(request, qaid, questionid):
     question = get_object_or_404(Question, id=questionid)
     answerList = Answer.objects.filter(question=questionid)
 
+    # If the question has no answers, don't display it
     aaList = Answer_attempt.objects.filter(quiz_attempt=qaid)
     takenQs = set()
     if not answerList:
@@ -109,6 +119,8 @@ def attempt(request, qaid, questionid):
         takenQ = get_object_or_404(Question, id=answer.question.id)
         takenQs.add(int(takenQ.id))
 
+    # If the user has answered the question, don't display it
+    # (Does not cover back button case)
     if int(questionid) in takenQs:
         questionList = Question.objects.filter(quiz=quiz.id)
         nextQuestions = sorted([q.id for q in questionList if int(q.id) not in takenQs])
@@ -133,11 +145,17 @@ def attempt(request, qaid, questionid):
 
 @login_required(login_url='/login/')
 def postattempt(request, qaid, questionid):
+    """Post user's response to a quiz question."""
     qa = get_object_or_404(Quiz_attempt, id=qaid)
+
+    # If the quiz is complete, do not allow user to post new response
     if qa.complete:
         return HttpResponseRedirect(reverse(finishquiz, args=[qaid]))
     question = get_object_or_404(Question, id=questionid)
     attemptForm = AttemptForm(question, request.POST)
+
+    """The next question in the quiz should be the first
+       chronologically that user has not answered."""
     if attemptForm.is_valid():
         answers = attemptForm.cleaned_data['answers']
         for a in answers:
@@ -157,6 +175,7 @@ def postattempt(request, qaid, questionid):
 
 @login_required(login_url='/login/')
 def quizattempt(request, qaid):
+    """Get a quiz attempt."""
     qa = get_object_or_404(Quiz_attempt, id=qaid)
     quiz = get_object_or_404(Quiz, id=qa.quiz.id)
     questionList = Question.objects.filter(quiz=quiz.id)
@@ -167,6 +186,10 @@ def quizattempt(request, qaid):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def quizzes(request):
+    """
+    Display the list of all quizzes.
+    Allow user to create a new quiz.
+    """
     quizList = Quiz.objects.order_by(Lower('name'))
     context = {'quizList': quizList, }
     return render(request, 'quizzes.html', context)
@@ -174,6 +197,10 @@ def quizzes(request):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def questions(request, quizid):
+    """
+    Display the list of questions for a given quiz.
+    Allow user to create a new question.
+    """
     questionForm = QuestionForm(initial={'quiz': quizid})
     quiz = get_object_or_404(Quiz, id=quizid)
     questionList = Question.objects.filter(quiz=quizid)
@@ -185,6 +212,10 @@ def questions(request, quizid):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def answers(request, quizid, questionid):
+    """
+    Display the list of answers for a given question.
+    Allow user to create a new answer.
+    """
     quiz = get_object_or_404(Quiz, id=quizid)
     question = get_object_or_404(Question, id=questionid)
     answerForm = AnswerForm(initial={'question': questionid})
@@ -198,6 +229,7 @@ def answers(request, quizid, questionid):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def postquiz(request):
+    """Create a new quiz."""
     quizname = request.POST['quizname']
     if not (re.search('[a-zA-Z0-9]', quizname)):
         return HttpResponseRedirect('/quizzes/')
@@ -210,6 +242,7 @@ def postquiz(request):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def postquestion(request, quizid):
+    """Create a new question."""
     questionForm = QuestionForm(request.POST)
     if questionForm.is_valid():
         question = questionForm.save()
@@ -219,6 +252,7 @@ def postquestion(request, quizid):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def postanswer(request, quizid, questionid):
+    """Create a new answer."""
     answerForm = AnswerForm(request.POST)
     if answerForm.is_valid():
         answer = answerForm.save()
@@ -227,6 +261,7 @@ def postanswer(request, quizid, questionid):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def deletequiz(request, quizid):
+    """Delete a quiz."""
     quiz = get_object_or_404(Quiz, id=quizid)
     if request.method == 'POST':
         quiz.delete()
@@ -235,6 +270,7 @@ def deletequiz(request, quizid):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def deletequestion(request, questionid):
+    """Delete a question."""
     question = get_object_or_404(Question, id=questionid)
     quizid = question.quiz.id
     if request.method == 'POST':
@@ -244,6 +280,7 @@ def deletequestion(request, questionid):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/')
 def deleteanswer(request, answerid):
+    """Delete an answer."""
     answer = get_object_or_404(Answer, id=answerid)
     questionid = answer.question.id
     question = get_object_or_404(Question, id=questionid)
@@ -255,6 +292,7 @@ def deleteanswer(request, answerid):
 
 @login_required(login_url='/login/')
 def results(request):
+    """Show results of all available taken quizzes."""
     user = request.user
     if user.is_superuser:
         outputs = Quiz_attempt.objects.all()
