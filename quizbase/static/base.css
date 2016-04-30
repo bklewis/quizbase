@@ -77,9 +77,10 @@ input[type=submit]:hover {
 }
 
 #loginbut {
+  position: fixed;
   margin-left: 20px;
   margin-right: 20px;
-  width: 278px;
+  width: 86%;
 }
 
 .centerme{
