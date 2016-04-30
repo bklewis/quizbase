@@ -1,3 +1,5 @@
+"""All urls for QuizBase."""
+
 from django.conf.urls import url
 from django.contrib.auth.views import login, logout
 from . import views
