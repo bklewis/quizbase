@@ -81,6 +81,7 @@ input[type=submit]:hover {
   margin-left: 20px;
   margin-right: 20px;
   width: 86%;
+  height: 30px;
 }
 
 .centerme{
