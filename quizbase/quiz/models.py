@@ -76,19 +76,19 @@ class Quiz_attempt(models.Model):
 
     def as_table_headers(self):
         """Return headers for html quiz attempt results table."""
-        output = '<tr>'
+        output = '<tr id="results">'
         for field in self._meta.fields[1:]:
-            output += '<th>%s</th>' % (field.name)
-        output += '<th>%s</th>' % ("Score")
+            output += '<th id="results">%s</th>' % (field.name)
+        output += '<th id="results">%s</th>' % ("Score")
         output += '</tr>'
         return output
 
     def as_table(self):
         """Return quiz attempt results as an html table row."""
-        output = '<tr>'
+        output = '<tr id="results">'
         for field in self._meta.fields[1:]:
-            output += '<td>%s</td>' % (getattr(self, field.name))
-        output += '<td>%s</td>' % (str(self.getScore()) + '/' + str(self.quiz.getScore()))
+            output += '<td id="results">%s</td>' % (getattr(self, field.name))
+        output += '<td id="results">%s</td>' % (str(self.getScore()) + '/' + str(self.quiz.getScore()))
         output += '</tr>'
         return output
 

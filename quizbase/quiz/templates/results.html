@@ -2,8 +2,7 @@
 {% block content %}
 <h1>Quiz Results</h1>
 
-<ul>
-<table>
+<table id="results">
 {{outputs.0.as_table_headers | safe }}
 {% for output in outputs %}
 	    {{ output.as_table | safe }}
@@ -11,6 +10,5 @@
     <li>You haven't taken any quizzes yet. Access your quizzes <a href="/quizme/">here</a>!</li>
 {% endfor %}
 </table>
-</ul>
 
 {% endblock %}

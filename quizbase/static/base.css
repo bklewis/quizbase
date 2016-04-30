@@ -1,12 +1,9 @@
 body {
-    background-color: #E5E6E4;
+	background-color: #E5E6E4;
 
-/*    font-family: "Comic Sans MS", cursive, sans-serif;*/
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
-
 
 h1,
 h2,
@@ -14,10 +11,7 @@ h3,
 h4,
 h5,
 h6 {
-/*
-    color: navy;
-*/
-    margin-left: 20px;
+	margin-left: 20px;
 }
 
 #nav {
@@ -27,19 +21,65 @@ h6 {
 	padding: 0;
 	list-style: none;
 	background-color: #669900;
-/*	border-bottom: 1px solid #ccc; 
-	border-top: 1px solid #ccc; 
-*/
 }
+
+#results {
+	border-collapse: collapse;
+	border: 1px solid #999;
+	padding: 0.5rem;
+}
+
+#orderedtable {
+	margin-left: 0px;
+}
+
+table {
+	margin-left: 20px;
+}
+
+form {
+	margin-left: 20px;
+}
+
 #nav li {
-	float: left; }
+	float: left; 
+}
+
 #nav li a {
 	display: block;
 	padding: 8px 15px;
 	text-decoration: none;
 	font-weight: bold;
 	color: #d5ff80;
-	border-right: 1px solid #ccc; }
+	border-right: 1px solid #ccc; 
+}
+
 #nav li a:hover {
 	color: #ffffff;
-	background-color: #88cc00; }
+	background-color: #88cc00; 
+}
+
+
+input[type=text], select {
+    padding: 6px 6px;
+    margin: 8px 8px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    background-color: #669900;
+    color: #d5ff80;
+    padding: 6px 6px;
+    margin: 2px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    color: #ffffff;
+	background-color: #88cc00;
+}

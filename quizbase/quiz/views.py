@@ -156,7 +156,7 @@ def postattempt(request, qaid, questionid):
         else:
             return HttpResponseRedirect(reverse(postquizattempt, args=[qaid]))
     else:
-        return HttpResponse("You have to pick at least one answer! Press the back button and try again")
+        return HttpResponse("Not quite... Please select at least one answer, and make sure there's no funny business going on.  Hit back and resubmit to try again!")
 
 
 @login_required(login_url='/login/')

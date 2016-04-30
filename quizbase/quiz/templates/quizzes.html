@@ -1,23 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Quiz Central</h1>
-<ul>
 <form action="/postquiz/" method="post" enctype="multipart/form-data">{% csrf_token %}
 	<label for="quizname">Enter the name of a new quiz here:</label>
 	<input type="text" name="quizname"<br>
 	<input type="submit" value="Submit">
 </form>
-</ul>
 <p></p>
 <h4>Existing Quizzes</h4>
-<ul>
 <table>
-{% for quiz in quizList %}
-    <tr><td><a href="/quizzes/{{ quiz.id }}/">{{ quiz.name }}</a></td>
-    <td><form method="post" action='/deletequiz/{{ quiz.id }}/'>{% csrf_token %}<input type="submit" value="Delete"/></form></td></tr>
-{% empty %}
-    <li>You haven't created any quizzes yet.  To make your first, enter a quiz title into the box above!</li>
-{% endfor %}
+	{% for quiz in quizList %}
+	<tr><td><a href="/quizzes/{{ quiz.id }}/">{{ quiz.name }}</a></td>
+		<td><form method="post" action='/deletequiz/{{ quiz.id }}/'>{% csrf_token %}<input type="submit" value="Delete"/></form></td></tr>
+	{% empty %}
+		<p>You haven't created any quizzes yet.  To make your first, enter a quiz title into the box above!<//p>
+	{% endfor %}
 </table>
-</ul>
 {% endblock %}

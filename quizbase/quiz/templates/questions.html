@@ -1,17 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Create a Quiz</h1>
-<h2>{{ quiz.name }}</h2>
+<h2><a href="/quizzes/">Quiz {{ quiz.name }}</a></h2>
 <form action="/postquestion/{{ quiz.id }}/" method="post">{% csrf_token %}
-	<ul>
         {{ questionForm.as_table }}
         <input type="submit" value="Submit" />
-	</ul>
 </form>
-<p></p>
 <h4>Questions</h4>
 <ol>
-<table>
+<table id="orderedtable">
 {% for question in questionList %}
     <tr><td><li><a href="/quizzes/{{ quiz.id }}/{{question.id}}/">{{ question.string }}</a></li></td>
     <td><form method="post" action='/deletequestion/{{ question.id }}/'>{% csrf_token %}<input type="submit" value="Delete"/></form></td></tr>

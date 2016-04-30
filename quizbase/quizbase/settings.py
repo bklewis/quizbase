@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -75,30 +76,26 @@ WSGI_APPLICATION = 'quizbase.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bklewis_quiz',
         'USER': 'bklewis',
         'PASSWORD': 'bklewis',
-        # os.path.join(BASE_DIR, 'db.sqlite3'),
         'TEST': {
                 'ENGINE': 'django.db.backends.sqlite3',
                 'NAME': os.path.join(BASE_DIR, 'quizbase/test_db'),
         },
     },
 }
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'quizbase/test_db'),
-    }
-}
-"""
 
-import sys
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'quizbase/test_db'),
+#     }
+# }
+
 if 'test' in sys.argv or 'test_coverage' in sys.argv:
     DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
     DATABASES['default']['NAME'] = os.path.join(BASE_DIR, 'quizbase/test_db')
