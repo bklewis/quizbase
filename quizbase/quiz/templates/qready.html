@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<p>You are about to take quiz <b>{{ quiz.name }}</b>.  This quiz contains {{ numQuestions }} questions.</p> 
-<p>Continuing will start the clock and begin the quiz.</p>
-Are you ready?  
-<a href="/postquizready/{{ quiz.id }}/">Yes</a></li>
-<a href="/quizme/">No</a></li>
+<div class="options">
+	<p>You are about to take quiz <b>{{ quiz.name }}</b>.  This quiz contains {{ numQuestions }} questions.</p> 
+	<p>Continuing will officially begin the quiz.</p>
+	Are you ready?  
+	<a href="/postquizready/{{ quiz.id }}/">Yes</a></li>
+	<a href="/quizme/">No</a></li>
+</div>
 {% endblock %}

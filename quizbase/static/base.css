@@ -5,15 +5,6 @@ body {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin-left: 20px;
-}
-
 #nav {
 	width: 100%;
 	float: left;
@@ -21,24 +12,6 @@ h6 {
 	padding: 0;
 	list-style: none;
 	background-color: #669900;
-}
-
-#results {
-	border-collapse: collapse;
-	border: 1px solid #999;
-	padding: 0.5rem;
-}
-
-#orderedtable {
-	margin-left: 0px;
-}
-
-table {
-	margin-left: 20px;
-}
-
-form {
-	margin-left: 20px;
 }
 
 #nav li {
@@ -82,4 +55,26 @@ input[type=submit] {
 input[type=submit]:hover {
     color: #ffffff;
 	background-color: #88cc00;
+}
+
+#results {
+	border-collapse: collapse;
+	border: 1px solid #999;
+	padding: 0.5rem;
+}
+
+#orderedtable {
+	margin-left: 0px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+table,
+form,
+.options {
+	margin-left: 20px;
 }

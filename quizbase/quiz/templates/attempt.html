@@ -1,12 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>{{ quiz.name }}</h1>
-<ol>
 <form action="/postattempt/{{ qaid }}/{{ question.id }}/" method="post">{% csrf_token %}
-        <ol>
-        {{ question.string }}
-        {{ attemptForm }}
-        </ol>
-        <input type="submit" value="Submit" />
+    {{ question.string }}
+    {{ attemptForm }}
+    <input type="submit" value="Submit" />
 </form>
 {% endblock %}
